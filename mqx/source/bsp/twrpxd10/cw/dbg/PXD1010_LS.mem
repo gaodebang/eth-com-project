@@ -1,0 +1,228 @@
+// memory config file for PXD1010
+reservedchar 0x21	// display '!' for invalid reads
+
+//Code Flash Array 0
+//range 0x00000000 0x0003FFFF 4 ReadWrite
+//range 0x00040000 0x0005FFFF 4 ReadWrite
+//range 0x00060000 0x0007FFFF 4 ReadWrite
+
+//Code Flash Array 1
+//range 0x00080000 0x0009FFFF 4 ReadWrite
+//range 0x000A0000 0x000BFFFF 4 ReadWrite
+//range 0x000C0000 0x000DFFFF 4 ReadWrite
+//range 0x000E0000 0x000FFFFF 4 ReadWrite
+reserved 0x00100000 0x001FFFFF
+
+// Shadow for Code Flash
+//range 0x00200000 0x00203FFF 4 ReadWrite
+reserved 0x00204000 0x003FFFFF
+
+//Code Flash Array 0 Test Sector
+//range 0x00400000 0x00403FFF 4 ReadWrite
+reserved 0x00404000 0x0047FFFF
+
+//Code Flash Array 1 Test Sector
+//range 0x00480000 0x00483FFF 4 ReadWrite
+reserved 0x00484000 0x007FFFFF
+
+//On Chip Flash Memories (Data Flash)
+//range 0x00800000 0x00803FFF 4 ReadWrite
+//range 0x00804000 0x00807FFF 4 ReadWrite
+//range 0x00808000 0x0080BFFF 4 ReadWrite
+//range 0x0080C000 0x0080FFFF 4 ReadWrite
+
+reserved 0x00810000 0x00BFFFFF
+
+// Data Flash Array 0 Test Sector
+//range 0x00C00000 0x00C03FFF 4 ReadWrite
+
+reserved 0x00C04000 0x00FFFFFF
+
+//Emulation Mapping
+//range 0x01000000 0x1FFFFFFF 4 ReadWrite
+
+reserved 0x20000000 0x3FFFFFFF
+
+// SRAM (ECC protection, standby support)
+//range 0x40000000 0x40001FFF 4 ReadWrite
+
+//SRAM (ECC protection, in PD2)
+//range 0x40002000 0x40005FFF 4 ReadWrite
+
+// SRAM (ECC protection, in PD2)
+//range 0x40006000 0x4000BFFF 4 ReadWrite
+
+reserved 0x4000C000 0x5FFFFFFF
+
+// Graphics SRAM (no ECC protection, no standby support)
+//range 0x60000000 0x60027FFF 4 ReadWrite
+reserved 0x60028000 0x7FFFFFFF
+
+// External Serial Flash Memory 0
+//range 0x80000000 0x87FFFFFF 4 ReadWrite
+reserved 0x88000000 0xBFFFFFFF
+
+// AIPS(1) - Off Platform Peripherals (mirrored to AIPS(0) memory range 0xFFE80000-0xFFEFFFFF)
+reserved 0xC3F80000 0xC3F87FFF
+
+// Code Flash 0 Configuration
+//range 0xC3F88000 0xC3F8BFFF 4 ReadWrite
+
+// Data Flash 0 Configuration (DFLASH0)
+//range 0xC3F8C000 0xC3F8FFFF 4 ReadWrite
+
+// System Integration Unit Lite (SIUL)
+//range 0xC3F90000 0xC3F93FFF 4 ReadWrite
+
+//WakeUp Unit (WKUP)
+//range 0xC3F94000 0xC3F97FFF 4 ReadWrite
+
+reserved 0xC3F98000 0xC3F9FFFF
+
+// Enhanced Modular I/O Subsystem 0 (eMIOS0)
+//range 0xC3FA0000 0xC3FA3FFF 4 ReadWrite
+
+//Enhanced Modular I/O Subsystem 1 (eMIOS1)
+range 0xC3FA4000 0xC3FA7FFF 4 ReadWrite 
+reserved 0xC3FA8000 0xC3FAFFFF
+
+// Code Flash 1 Configuration (CFLASH1)
+//range 0xC3FB0000 0xC3FB3FFF 4 ReadWrite
+reserved 0xC3FB4000 0xC3FD7FFF
+
+// System Status and Configuration Module (SSCM)
+//range 0xC3FD8000 0xC3FDBFFF 4 ReadWrite
+
+// Mode Entry Module (MC_ME)
+//range 0xC3FDC000 0xC3FDFFFF 4 ReadWrite
+
+// Clock Generation Module (MC_CGM, XOSC, IRCOSC, FMPLL_0, FMPLL_1, CMU0, CMU1)
+//range 0xC3FE0000 0xC3FE3FFF 4 ReadWrite
+
+// Reset Generation Module (MC_RGM)
+//range 0xC3FE4000 0xC3FE7FFF 4 ReadWrite
+
+//Power Control Unit (MC_PCU)
+//range 0xC3FE8000 0xC3FEBFFF 4 ReadWrite
+
+//Real Time Counter (RTC/API)
+//range 0xC3FEC000 0xC3FEFFFF 4 ReadWrite
+
+// Periodic Interrupt Timer (PIT/RTI)
+//range 0xC3FF0000 0xC3FF3FFF 4 ReadWrite
+reserved 0xC3FF4000 0xC3FFFFFF
+
+// AIPS(0) - Off Platform Peripherals (new range)
+// Analog to Digital Converter 0 (ADC0)
+//range 0xFFE00000 0xFFE03FFF 4 ReadWrite
+reserved 0xFFE04000 0xFFE2FFFF
+
+// Inter-IC Bus Interface Controller 0 (I2C0)
+range 0xFFE30000 0xFFE33FFF 4 ReadWrite 
+
+//Inter-IC Bus Interface Controller 1 (I2C1)
+//range 0xFFE34000 0xFFE37FFF 4 ReadWrite
+
+//Inter-IC Bus Interface Controller 2 (I2C2)
+//range 0xFFE38000 0xFFE3BFFF 4 ReadWrite
+
+// Inter-IC Bus Interface Controller 3 (I2C3) 
+//range 0xFFE3C000 0xFFE3FFFF 4 ReadWrite
+
+// LINFlex 0
+//range 0xFFE40000 0xFFE43FFF 4 ReadWrite
+
+// LINFlex 1
+//range 0xFFE44000 0xFFE47FFF 4 ReadWrite
+reserved 0xFFE48000 0xFFE5FFFF
+
+//Stepper Motor Control (SMC)
+//range 0xFFE60000 0xFFE60FFF 4 ReadWrite
+
+// Stepper Stall Detect (SSD0)
+//range 0xFFE61000 0xFFE617FF 4 ReadWrite
+
+// Stepper Stall Detect (SSD1)
+range 0xFFE61800 0xFFE61FFF 4 ReadWrite 
+
+// Stepper Stall Detect (SSD2)
+//range 0xFFE62000 0xFFE627FF 4 ReadWrite
+
+// Stepper Stall Detect (SSD3)
+//range 0xFFE62800 0xFFE62FFF 4 ReadWrite
+
+// Stepper Stall Detect (SSD4)
+//range 0xFFE63000 0xFFE637FF 4 ReadWrite
+
+// Stepper Stall Detect (SSD5)
+//range 0xFFE63800 0xFFE63FFF 4 ReadWrite
+
+reserved 0xFFE64000 0xFFE6FFFF
+
+// CAN Sampler (CANSP)
+//range 0xFFE70000 0xFFE73FFF 4 ReadWrite
+
+// LCD Controller 0 (LCD0)
+//range 0xFFE74000 0xFFE77FFF 4 ReadWrite
+
+// Sound Generation Logic (SGL)
+//range 0xFFE78000 0xFFE7BFFF 4 ReadWrite
+
+// Display Control Unit 0 (DCU0)
+//range 0xFFE7C000 0xFFE7FFFF 4 ReadWrite
+
+//AIPS(0) - Off Platform Mirror From AIPS(1) (Mirrored range from AIPS(1) range 0xC3F80000-0xC3FFFFFF)
+reserved 0xFFE80000 0xFFEFFFFF
+// AIPS(0) - On Platform Peripherals (existing eSys range)
+// AIPS0
+//range 0xFFF00000 0xFFF03FFF 4 ReadWrite
+// AXBS
+//range 0xFFF04000 0xFFF07FFF 4 ReadWrite
+reserved 0xFFF08000 0xFFF0FFFF
+
+// Memory Protection Unit (MPU)
+//range 0xFFF10000 0xFFF13FFF 4 ReadWrite
+
+reserved 0xFFF14000 0xFFF37FFF
+
+// Software Watchdog (SWT0)
+//range 0xFFF38000 0xFFF3BFFF 4 ReadWrite
+
+// System Timer Module (STM0)
+//range 0xFFF3C000 0xFFF3FFFF 4 ReadWrite
+
+// Error Correction Status Module
+//range 0xFFF40000 0xFFF43FFF 4 ReadWrite
+
+// Direct Memory Access Controller 2 (DMA2x)
+//range 0xFFF44000 0xFFF47FFF 4 ReadWrite
+
+// Interrupt Controller (INTC)
+//range 0xFFF48000 0xFFF4BFFF 4 ReadWrite
+reserved 0xFFF4C000 0xFFF8FFFF
+
+// DSPI 0
+//range 0xFFF90000 0xFFF93FFF 4 ReadWrite
+
+//  DSPI 1
+//range 0xFFF94000 0xFFF97FFF 4 ReadWrite
+reserved 0xFFF98000 0xFFFA7FFF
+
+// QuadSPI 0
+//range 0xFFFA8000 0xFFFABFFF 4 ReadWrite
+
+reserved 0xFFFAC000 0xFFFBFFFF
+
+// FlexCan 0 (CAN0)
+//range 0xFFFC0000 0xFFFC3FFF 4 ReadWrite
+
+// FlexCan 1 (CAN1)
+//range 0xFFFC4000 0xFFFC7FFF 4 ReadWrite
+reserved 0xFFFC8000 0xFFFDBFFF
+
+//DMA Channel Multiplexer (DMA_MUX)
+//range 0xFFFDC000 0xFFFDFFFF 4 ReadWrite 
+reserved 0xFFFE0000 0xFFFFBFFF
+
+// Boot Assist Module (BAM)
+//range 0xFFFFC000 0xFFFFFFFF 4 ReadWrite

@@ -1,0 +1,116 @@
+/* lcf file for MPXD10 processor */ 
+/* 1 MB Flash (0x0000_0000->0x000F_FFFF)
+ * 48KB ECC RAM (0x4000_0000->0x4000_BFFF)
+ * 160KB Graphics RAM (NON ECC) (0x6000_0000 -> 0x6002_7FFF) 
+ */
+ 
+  
+MEMORY
+{
+    resetvector:           	org = 0x00000000,   len = 0x00000020
+    /* Due to the problem on 16 byte in size of IVOR handwired  *
+     * (different other arch with 32 byte in size				* 
+     *. This exception handler has been moved to flash area.    */
+    exception_handlers: 	org = 0x00001000,   len = 0x00001000 /* 4KB */
+    internal_flash:        	org = 0x00002000,   len = 0x0007DFF0 /* 516KB */
+
+    internal_ram:          	org = 0x60000000,   len = 0x0001E000   /* 122KB */
+    stack :                	org = 0x6001E000,   len = 0x00009FF0   /* 40KB*/    
+
+    /* Kernel space starts after RAM variables (Location of MQX Kernel data + MQX heap) */
+    end_of_kd:             	org = 0x6001DFF0,   len = 0x00000000        
+    
+}
+
+/* This will ensure the rchw and reset vector are not stripped by the linker */
+FORCEACTIVE { "bam_rchw" "bam_resetvector" }
+
+SECTIONS
+{
+    .__bam_bootarea LOAD (0x00000000): {} > resetvector	
+	 
+	
+	GROUP : {
+	  .ivor_branch_table (VLECODE) LOAD (0x00001000) : {}	            
+	  .__exception_handlers (VLECODE) LOAD (_e_ivor_branch_table): {}
+	
+	} > exception_handlers
+	
+    GROUP : {
+
+      .init /*LOAD  (0x00000020)*/: {}
+      .init_vle (VLECODE) /*LOAD (_e_init)*/: {
+        *(.init)
+        *(.init_vle)
+      }
+
+      .text : {} 
+      .text_vle (VLECODE) ALIGN(0x08) : {
+         *(.text)
+         *(.text_vle)
+      }
+
+      .dispatch (VLECODE) : { * (DISPATCH) }
+      .ipsum (VLECODE) : { * (IPSUM) }
+
+      .rodata (CONST) : {
+         *(.rdata)
+         *(.rodata)
+      }
+  
+      .ctors : {}
+      .dtors : {}
+      extab : {}
+      extabindex : {}
+    } > internal_flash
+
+
+    GROUP : {
+       .__uninitialized_intc_handlertable ALIGN(2048) : {}
+       .data   : {}
+       .sdata  : {}
+       .sbss   : {}
+       .sdata2 : {}
+       .sbss2  : {}
+       .bss    : {}
+       
+       /* MQX Kernel data section */
+       .kernel_data : { __KERNEL_DATA_START = ALIGN(0x10); }
+       
+    } > internal_ram
+
+    .end_of_kernel_data :
+    {
+       __KERNEL_DATA_END = .;
+    } > end_of_kd
+}
+
+__KERNEL_DATA_VERIFY_ENABLE = 0;  /* Test SDRAM read/write */
+
+
+// Definitions for MMU
+__PRIVATE_RAM_START = ADDR(internal_ram);
+__PRIVATE_RAM_SIZE = SIZEOF(internal_ram);
+
+/*
+__UNCACHED_DATA_START = ADDR(internal_uncached_ram);
+__UNCACHED_DATA_SIZE = SIZEOF(internal_uncached_ram);
+__UNCACHED_DATA_END = ADDR(internal_uncached_ram)+SIZEOF(internal_uncached_ram);
+*/
+
+_stack_addr = ADDR(stack)+SIZEOF(stack);
+_stack_end  = ADDR(stack);
+
+/* Vector entry for each handwired IVORn. */
+/* Vector entry for each handwired IVORn. 
+ * Note that: (PSP_INT_VECTOR_ENTRY - Exception Handler address) must in range  +/- 0->2^24 
+ */
+PSP_INT_VECTOR_ENTRY = _int_kernel_isr;
+
+/* Exceptions Handlers Location (used in Exceptions.c for e200z1 IVPR initialization)*/
+
+EXCEPTION_HANDLERS    = ADDR(exception_handlers);
+
+L2SRAM_LOCATION = 0x40000000;
+/*
+L2SRAM_INIT_LEN = 0x93000;*/

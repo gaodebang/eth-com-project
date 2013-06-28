@@ -1,0 +1,876 @@
+/**HEADER********************************************************************
+* 
+* Copyright (c) 2008 Freescale Semiconductor;
+* All Rights Reserved
+*
+* Copyright (c) 2004-2008 Embedded Access Inc.;
+* All Rights Reserved
+*
+* Copyright (c) 1989-2008 ARC International;
+* All Rights Reserved
+*
+*************************************************************************** 
+*
+* THIS SOFTWARE IS PROVIDED BY FREESCALE "AS IS" AND ANY EXPRESSED OR 
+* IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  
+* IN NO EVENT SHALL FREESCALE OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+* INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
+* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) 
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING 
+* IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF 
+* THE POSSIBILITY OF SUCH DAMAGE.
+*
+**************************************************************************
+*
+* $FileName: mpxs20.h$
+* $Version : 3.8.3.0$
+* $Date    : Jun-7-2012$
+*
+* Comments:
+*
+*   This file contains the type definitions for the Freescale PowerPC 
+*   MPC5554 processor.
+*
+*END***********************************************************************/
+
+#ifndef __mpxs20_h__
+#define __mpxs20_h__
+
+/* Indicate processor type */
+#define PSP_BOOKE
+#define PSP_E200_CORE_Z4
+
+// Specify # MMU TLB entries prior to including e200core.h 
+#define E200CORE_MMU_NUM_TLBS       (32) //(16) FIXME: MMU not used on PXS20 this has to be at least 32 for succesfull compilation
+
+#include <e200core.h>
+#include <mpxsxx.h>
+
+/*--------------------------------------------------------------------------*/
+/*
+**                    CONSTANT DEFINITIONS
+*/
+
+
+#define PSP_SUPPORT_STRUCT_DEFINED                   1
+#define PSP_HAS_DSP                                  0
+#define PSP_HAS_DSP_TASKS                            0
+#define PSP_HAS_FPU                                  0
+#define PSP_ALWAYS_SAVE_AND_RESTORE_VOLATILE_FP_REGS 0
+
+/*==========================================================================*/
+/*
+**                   MQX REQUIRED DEFINITIONS
+**
+** Other MQX kernel and component functions require these definitions to exist.
+*/
+
+
+/*
+** Define padding needed to make the STOREBLOCK_STRUCT align properly
+** to cache line size (see mem_prv.h)
+*/
+#define PSP_MEM_STOREBLOCK_ALIGNMENT   (2) /* padding in _mqx_uints */
+
+// TODO: Verify this
+/* CTXCR register is not supported by MPC5554. CS field is read as zero */
+#define PSP_IVORx_MASK                 (0xFF8)
+
+#define PSP_MSR_CE 	   (1<<(63-46)) /* Critical interrupt enable */
+#define PSP_MSR_WE 	   (1<<(63-45)) /* Wait state enable */
+#define PSP_MSR_SPE        (1<<(63-38)) /* SPE APU execuition enable */
+
+/* overwrite PSP_MSR_EE in powerpc.h */
+#ifdef PSP_MSR_EE
+#undef PSP_MSR_EE  
+#define PSP_MSR_EE         (1<<(63-48)) /* Exernal interrupt enable */
+#endif
+
+/* Some extra cache defines */
+#define PSP_DCACHE_NUM_LINES       (128)
+#define PSP_DCACHE_NUM_WAYS        (4)
+#ifdef PSP_DCACHE_SIZE
+#undef PSP_DCACHE_SIZE
+#define PSP_DCACHE_SIZE            (PSP_DCACHE_NUM_LINES*PSP_CACHE_LINE_SIZE*PSP_DCACHE_NUM_WAYS) /* 16Kbyte */
+#endif
+
+#define PSP_ICACHE_NUM_LINES       (128)
+#define PSP_ICACHE_NUM_WAYS        (4)
+#ifdef PSP_ICACHE_SIZE
+#undef PSP_ICACHE_SIZE
+#define PSP_ICACHE_SIZE            (PSP_ICACHE_NUM_LINES*PSP_CACHE_LINE_SIZE*PSP_DCACHE_NUM_WAYS) /* 16Kbyte */
+#endif
+
+#undef  PSP_MEMORY_ACCESSING_CAPABILITY
+#define PSP_MEMORY_ACCESSING_CAPABILITY (32)
+
+/* Do you want to verify kernel data can be read and written correctly */
+#define PSP_KERNEL_DATA_VERIFY_ENABLE   \
+        ((uint_32)__KERNEL_DATA_VERIFY_ENABLE)
+
+
+/*==========================================================================*/
+/*
+**                    ISR VECTOR TABLE
+*/
+
+/*
+** Interrupt controller sources
+**
+** The Interrupt controller has two types of interrupt requests: peripheral and 
+** software settable. Both interrupts are external input interrupt to 
+** e200z6 core (IVOR4). 
+**
+** Software settable interrupts 0-7 are assigned vectors 0-7, respectively.
+** The peripheral interrupt requests are assigned vectors 8 to 300 to cover
+** all of the peripheral interrupt requests.
+**
+** All external interrupts are demuxed by an external ISR to generate
+** individual ISR for each local interrupt source.
+**
+** Following is vector table for interrupt controller in software vector mode.
+*/
+
+#define MPXS20_INTC_VECTOR_BASE  (PSP_EXCPT_SPE_FP_ROUND + 1)
+#define QINTC_BASE_VECTOR          MPXS20_INTC_VECTOR_BASE
+
+#define _PSP_VECTOR_TO_IRQ(v) ((v)-QINTC_BASE_VECTOR)
+#define _PSP_IRQ_TO_VECTOR(i) ((i)+QINTC_BASE_VECTOR)
+
+#ifndef __ASM__
+
+typedef enum 
+{
+/* Software settable interrupts */
+   MPXS20_INTC_SSCIR0_VECTOR = MPXS20_INTC_VECTOR_BASE,
+   MPXS20_INTC_SSCIR1_VECTOR,
+   MPXS20_INTC_SSCIR2_VECTOR,
+   MPXS20_INTC_SSCIR3_VECTOR,
+   MPXS20_INTC_SSCIR4_VECTOR,
+   MPXS20_INTC_SSCIR5_VECTOR,
+   MPXS20_INTC_SSCIR6_VECTOR,
+   MPXS20_INTC_SSCIR7_VECTOR,
+
+   MPXS20_INTC_NOTUSED_8_VECTOR,
+
+/* Peripheral interrupts */
+
+   /* ECSM */
+   MPXS20_INTC_ECSM_ABOART_STALL_VECTOR,
+   
+   /* DMA */
+   MPXS20_INTC_DMA_COMBINED_ERROR_VECTOR,
+   MPXS20_INTC_DMA_CHANNEL_0_VECTOR,
+   MPXS20_INTC_DMA_CHANNEL_1_VECTOR,
+   MPXS20_INTC_DMA_CHANNEL_2_VECTOR,
+   MPXS20_INTC_DMA_CHANNEL_3_VECTOR,
+   MPXS20_INTC_DMA_CHANNEL_4_VECTOR,
+   MPXS20_INTC_DMA_CHANNEL_5_VECTOR,
+   MPXS20_INTC_DMA_CHANNEL_6_VECTOR,
+   MPXS20_INTC_DMA_CHANNEL_7_VECTOR,
+   MPXS20_INTC_DMA_CHANNEL_8_VECTOR,
+   MPXS20_INTC_DMA_CHANNEL_9_VECTOR,
+   MPXS20_INTC_DMA_CHANNEL_10_VECTOR,
+   MPXS20_INTC_DMA_CHANNEL_11_VECTOR,
+   MPXS20_INTC_DMA_CHANNEL_12_VECTOR,
+   MPXS20_INTC_DMA_CHANNEL_13_VECTOR,
+   MPXS20_INTC_DMA_CHANNEL_14_VECTOR,
+   MPXS20_INTC_DMA_CHANNEL_15_VECTOR,
+
+   MPXS20_INTC_RESERVED_27_VECTOR,
+
+   /* Watchdog */
+   MPXS20_INTC_SWT0_TIMEOUT_VECTOR,
+   MPXS20_INTC_SWT1_TIMEOUT_VECTOR,
+
+   /* System timer */
+   MPXS20_INTC_STM_MACTH_0_VECTOR,
+   MPXS20_INTC_STM_MACTH_1_VECTOR,
+   MPXS20_INTC_STM_MACTH_2_VECTOR,
+   MPXS20_INTC_STM_MACTH_3_VECTOR,
+
+   MPXS20_INTC_NOTUSED_34_VECTOR,
+
+   MPXS20_INTC_ECSM_ECC_NONCORR_VECTOR,
+   MPXS20_INTC_ECSM_1BIT_CORR_VECTOR,
+
+   MPXS20_INTC_NOTUSED_37_VECTOR,
+
+   /* Off-Platform peripherals */
+   MPXS20_INTC_NOTUSED_38_VECTOR,
+   MPXS20_INTC_NOTUSED_39_VECTOR,
+   MPXS20_INTC_NOTUSED_40_VECTOR,
+
+   /* SIUL */
+   MPXS20_INTC_SIU_IRQ_0_VECTOR,
+   MPXS20_INTC_SIU_IRQ_1_VECTOR,
+   MPXS20_INTC_SIU_IRQ_2_VECTOR,
+   MPXS20_INTC_SIU_IRQ_3_VECTOR,
+
+   MPXS20_INTC_NOTUSED_45_VECTOR,
+   MPXS20_INTC_NOTUSED_46_VECTOR,
+   MPXS20_INTC_NOTUSED_47_VECTOR,
+   MPXS20_INTC_NOTUSED_48_VECTOR,
+   MPXS20_INTC_NOTUSED_49_VECTOR,
+   MPXS20_INTC_NOTUSED_50_VECTOR,
+
+   /* MC_ME */
+   MPXS20_INTC_ME_SAFE_MODE_VECTOR,
+   MPXS20_INTC_ME_MODE_TRANS_VECTOR,
+   MPXS20_INTC_ME_INVALID_MODE_INTR_VECTOR,
+   MPXS20_INTC_ME_INVALID_MODE_CONFIG_VECTOR,
+
+   MPXS20_INTC_NOTUSED_55_VECTOR,
+
+   /* MC_RGM */
+   MPXS20_INTC_RGM_FUNC_RESET_VECTOR,
+
+   /* Oscillator */
+   MPXS20_INTC_XOSC_EXPIRED_VECTOR,
+
+   MPXS20_INTC_NOTUSED_58_VECTOR,
+
+   /* Periodic interrupt timer */
+   MPXS20_INTC_PIT0_VECTOR,
+   MPXS20_INTC_PIT1_VECTOR,
+   MPXS20_INTC_PIT2_VECTOR,
+
+   /* ADC0 */
+   MPXS20_INTC_ADC0_EOC_VECTOR,
+   MPXS20_INTC_ADC0_ER_VECTOR,
+   MPXS20_INTC_ADC0_WD_VECTOR,
+
+   /* Flexcan0 */
+   MPXS20_INTC_FLEXCAN0_ESR_ERR_VECTOR,
+   MPXS20_INTC_FLEXCAN0_ESR_BOFF_VECTOR,
+
+   MPXS20_INTC_RESERVED_67_VECTOR,
+
+   MPXS20_INTC_FLEXCAN0_BUF_00_03_VECTOR,
+   MPXS20_INTC_FLEXCAN0_BUF_04_07_VECTOR,
+   MPXS20_INTC_FLEXCAN0_BUF_08_11_VECTOR,
+   MPXS20_INTC_FLEXCAN0_BUF_12_15_VECTOR,
+   MPXS20_INTC_FLEXCAN0_BUF_16_31_VECTOR,
+
+   MPXS20_INTC_NOTUSED_73_VECTOR,
+
+   /* DSPI_0 */
+   MPXS20_INTC_DSPI0_TFUF_RFOF_VECTOR,
+   MPXS20_INTC_DSPI0_EOQF_VECTOR,
+   MPXS20_INTC_DSPI0_TFFF_VECTOR,
+   MPXS20_INTC_DSPI0_TCF_VECTOR,
+   MPXS20_INTC_DSPI0_RFDF_VECTOR,
+
+   /* LINFlex_0 */
+   MPXS20_INTC_LINFLEX0_RXI_VECTOR,
+   MPXS20_INTC_LINFLEX0_TXI_VECTOR,
+   MPXS20_INTC_LINFLEX0_ERR_VECTOR,
+
+   /* ADC_1 */
+   MPXS20_INTC_ADC1_EOC_VECTOR,
+   MPXS20_INTC_ADC1_ER_VECTOR,
+   MPXS20_INTC_ADC1_WD_VECTOR,
+
+   /* Flexcan_1 */
+   MPXS20_INTC_FLEXCAN1_ESR_ERR_VECTOR,
+   MPXS20_INTC_FLEXCAN1_ESR_BOFF_VECTOR,
+
+   MPXS20_INTC_RESERVED_87_VECTOR,
+
+   MPXS20_INTC_FLEXCAN1_BUF_00_03_VECTOR,
+   MPXS20_INTC_FLEXCAN1_BUF_04_07_VECTOR,
+   MPXS20_INTC_FLEXCAN1_BUF_08_11_VECTOR,
+   MPXS20_INTC_FLEXCAN1_BUF_12_15_VECTOR,
+   MPXS20_INTC_FLEXCAN1_BUF_16_31_VECTOR,
+
+   MPXS20_INTC_NOTUSED_93_VECTOR,
+   
+   /* DSPI_1 */
+   MPXS20_INTC_DSPI1_TFUF_RFOF_VECTOR,
+   MPXS20_INTC_DSPI1_EOQF_VECTOR,
+   MPXS20_INTC_DSPI1_TFFF_VECTOR,
+   MPXS20_INTC_DSPI1_TCF_VECTOR,
+   MPXS20_INTC_DSPI1_RFDF_VECTOR,
+
+   /* LINFlex_1 */
+   MPXS20_INTC_LINFLEX1_RXI_VECTOR,
+   MPXS20_INTC_LINFLEX1_TXI_VECTOR,
+   MPXS20_INTC_LINFLEX1_ERR_VECTOR,
+
+   MPXS20_INTC_NOTUSED_102_VECTOR,
+   MPXS20_INTC_NOTUSED_103_VECTOR,
+   MPXS20_INTC_NOTUSED_104_VECTOR,
+   MPXS20_INTC_NOTUSED_105_VECTOR,
+   MPXS20_INTC_NOTUSED_106_VECTOR,
+   MPXS20_INTC_NOTUSED_107_VECTOR,
+   MPXS20_INTC_NOTUSED_108_VECTOR,
+   MPXS20_INTC_NOTUSED_109_VECTOR,
+   MPXS20_INTC_NOTUSED_110_VECTOR,
+   MPXS20_INTC_NOTUSED_111_VECTOR,
+   MPXS20_INTC_NOTUSED_112_VECTOR,
+   MPXS20_INTC_NOTUSED_113_VECTOR,
+
+   /* DSPI_2 */
+   MPXS20_INTC_DSPI2_TFUF_RFOF_VECTOR,
+   MPXS20_INTC_DSPI2_EOQF_VECTOR,
+   MPXS20_INTC_DSPI2_TFFF_VECTOR,
+   MPXS20_INTC_DSPI2_TCF_VECTOR,
+   MPXS20_INTC_DSPI2_RFDF_VECTOR,
+
+   MPXS20_INTC_NOTUSED_119_VECTOR,
+   MPXS20_INTC_NOTUSED_120_VECTOR,
+   MPXS20_INTC_NOTUSED_121_VECTOR,
+   MPXS20_INTC_NOTUSED_122_VECTOR,
+   MPXS20_INTC_NOTUSED_123_VECTOR,
+   MPXS20_INTC_NOTUSED_124_VECTOR,
+   MPXS20_INTC_NOTUSED_125_VECTOR,
+   MPXS20_INTC_NOTUSED_126_VECTOR,
+
+   MPXS20_INTC_PIT3_VECTOR,
+
+   MPXS20_INTC_NOTUSED_128_VECTOR,
+   MPXS20_INTC_NOTUSED_129_VECTOR,
+   MPXS20_INTC_NOTUSED_130_VECTOR,
+
+   /* FlexRay */
+   MPXS20_INTC_FLEXRAY_LRNEIF_DRNEIF_VECTOR,
+   MPXS20_INTC_FLEXRAY_LRCEIF_DRCEIF_VECTOR,
+   MPXS20_INTC_FLEXRAY_FAFAIF_VECTOR,
+   MPXS20_INTC_FLEXRAY_FAFVIF_VECTOR,
+   MPXS20_INTC_FLEXRAY_WUPIF_VECTOR,
+   MPXS20_INTC_FLEXRAY_PRIF_VECTOR,
+   MPXS20_INTC_FLEXRAY_CHIF_VECTOR,
+   MPXS20_INTC_FLEXRAY_TBIF_VECTOR,
+   MPXS20_INTC_FLEXRAY_RBIF_VECTOR,
+   MPXS20_INTC_FLEXRAY_MIF_VECTOR,
+
+   MPXS20_INTC_RESERVED_141_VECTOR,
+   MPXS20_INTC_RESERVED_142_VECTOR,
+   MPXS20_INTC_RESERVED_143_VECTOR,
+   MPXS20_INTC_RESERVED_144_VECTOR,
+   MPXS20_INTC_RESERVED_145_VECTOR,
+   MPXS20_INTC_RESERVED_146_VECTOR,
+   MPXS20_INTC_RESERVED_147_VECTOR,
+   MPXS20_INTC_RESERVED_148_VECTOR,
+   MPXS20_INTC_RESERVED_149_VECTOR,
+   MPXS20_INTC_RESERVED_150_VECTOR,
+   MPXS20_INTC_RESERVED_151_VECTOR,
+   MPXS20_INTC_RESERVED_152_VECTOR,
+   MPXS20_INTC_RESERVED_153_VECTOR,
+   MPXS20_INTC_RESERVED_154_VECTOR,
+   MPXS20_INTC_RESERVED_155_VECTOR,
+   MPXS20_INTC_RESERVED_156_VECTOR,
+
+   /* eTimer_0 */
+   MPXS20_INTC_ETIMER0_TC0IR_VECTOR,
+   MPXS20_INTC_ETIMER0_TC1IR_VECTOR,
+   MPXS20_INTC_ETIMER0_TC2IR_VECTOR,
+   MPXS20_INTC_ETIMER0_TC3IR_VECTOR,
+   MPXS20_INTC_ETIMER0_TC4IR_VECTOR,
+   MPXS20_INTC_ETIMER0_TC5IR_VECTOR,
+
+   MPXS20_INTC_NOTUSED_163_VECTOR,
+   MPXS20_INTC_NOTUSED_164_VECTOR,
+
+   MPXS20_INTC_ETIMER0_WTIF_VECTOR,
+
+   MPXS20_INTC_NOTUSED_166_VECTOR,
+
+   MPXS20_INTC_ETIMER0_RCF_VECTOR,
+
+   /* eTimer_1 */
+   MPXS20_INTC_ETIMER1_TC0IR_VECTOR,
+   MPXS20_INTC_ETIMER1_TC1IR_VECTOR,
+   MPXS20_INTC_ETIMER1_TC2IR_VECTOR,
+   MPXS20_INTC_ETIMER1_TC3IR_VECTOR,
+   MPXS20_INTC_ETIMER1_TC4IR_VECTOR,
+   MPXS20_INTC_ETIMER1_TC5IR_VECTOR,
+
+   MPXS20_INTC_NOTUSED_174_VECTOR,
+   MPXS20_INTC_NOTUSED_175_VECTOR,
+   MPXS20_INTC_NOTUSED_176_VECTOR,
+   MPXS20_INTC_NOTUSED_177_VECTOR,
+
+   MPXS20_INTC_ETIMER1_RCF_VECTOR,
+
+   /* FlexPWM_0 */
+   MPXS20_INTC_FLEXPWM0_RF0_VECTOR,
+   MPXS20_INTC_FLEXPWM0_COF0_VECTOR,
+   MPXS20_INTC_FLEXPWM0_CAF0_VECTOR,
+   MPXS20_INTC_FLEXPWM0_RF1_VECTOR,
+   MPXS20_INTC_FLEXPWM0_COF1_VECTOR,
+   MPXS20_INTC_FLEXPWM0_CAF1_VECTOR,
+   MPXS20_INTC_FLEXPWM0_RF2_VECTOR,
+   MPXS20_INTC_FLEXPWM0_COF2_VECTOR,
+   MPXS20_INTC_FLEXPWM0_CAF2_VECTOR,
+   MPXS20_INTC_FLEXPWM0_RF3_VECTOR,
+   MPXS20_INTC_FLEXPWM0_COF3_VECTOR,
+   MPXS20_INTC_FLEXPWM0_CAF3_VECTOR,
+   MPXS20_INTC_FLEXPWM0_FFLAG_VECTOR,
+   MPXS20_INTC_FLEXPWM0_REF_VECTOR,
+
+   /* CTU_0 */
+   MPXS20_INTC_CTU0_MRS_VECTOR,
+   MPXS20_INTC_CTU0_T0_VECTOR,
+   MPXS20_INTC_CTU0_T1_VECTOR,
+   MPXS20_INTC_CTU0_T2_VECTOR,
+   MPXS20_INTC_CTU0_T3_VECTOR,
+   MPXS20_INTC_CTU0_T4_VECTOR,
+   MPXS20_INTC_CTU0_T5_VECTOR,
+   MPXS20_INTC_CTU0_T6_VECTOR,
+   MPXS20_INTC_CTU0_T7_VECTOR,
+   MPXS20_INTC_CTU0_FIFO0_VECTOR,
+   MPXS20_INTC_CTU0_FIFO1_VECTOR,
+   MPXS20_INTC_CTU0_FIFO2_VECTOR,
+   MPXS20_INTC_CTU0_FIFO3_VECTOR,
+   MPXS20_INTC_CTU0_ADC_VECTOR,
+   MPXS20_INTC_CTU0_ERR_VECTOR,
+
+   MPXS20_INTC_NOTUSED_208_VECTOR,
+   MPXS20_INTC_NOTUSED_209_VECTOR,
+   MPXS20_INTC_NOTUSED_210_VECTOR,
+   MPXS20_INTC_NOTUSED_211_VECTOR,
+   MPXS20_INTC_NOTUSED_212_VECTOR,
+   MPXS20_INTC_NOTUSED_213_VECTOR,
+   MPXS20_INTC_NOTUSED_214_VECTOR,
+   MPXS20_INTC_NOTUSED_215_VECTOR,
+   MPXS20_INTC_NOTUSED_216_VECTOR,
+   MPXS20_INTC_NOTUSED_217_VECTOR,
+   MPXS20_INTC_NOTUSED_218_VECTOR,
+   MPXS20_INTC_NOTUSED_219_VECTOR,
+   MPXS20_INTC_NOTUSED_220_VECTOR,
+   MPXS20_INTC_NOTUSED_221_VECTOR,
+
+   /* eTimer_2 */
+   MPXS20_INTC_ETIMER2_TC0IR_VECTOR,
+   MPXS20_INTC_ETIMER2_TC1IR_VECTOR,
+   MPXS20_INTC_ETIMER2_TC2IR_VECTOR,
+   MPXS20_INTC_ETIMER2_TC3IR_VECTOR,
+   MPXS20_INTC_ETIMER2_TC4IR_VECTOR,
+   MPXS20_INTC_ETIMER2_TC5IR_VECTOR,
+   MPXS20_INTC_NOTUSED_228_VECTOR,
+   MPXS20_INTC_NOTUSED_229_VECTOR,
+   MPXS20_INTC_NOTUSED_230_VECTOR,
+   MPXS20_INTC_NOTUSED_231_VECTOR,
+   MPXS20_INTC_ETIMER2_RCF_VECTOR,
+
+   /* FlexPWM_1 */
+   MPXS20_INTC_FLEXPWM1_RF0_VECTOR,
+   MPXS20_INTC_FLEXPWM1_COF0_VECTOR,
+   MPXS20_INTC_FLEXPWM1_CAF0_VECTOR,
+   MPXS20_INTC_FLEXPWM1_RF1_VECTOR,
+   MPXS20_INTC_FLEXPWM1_COF1_VECTOR,
+   MPXS20_INTC_FLEXPWM1_CAF1_VECTOR,
+   MPXS20_INTC_FLEXPWM1_RF2_VECTOR,
+   MPXS20_INTC_FLEXPWM1_COF2_VECTOR,
+   MPXS20_INTC_FLEXPWM1_CAF2_VECTOR,
+   MPXS20_INTC_FLEXPWM1_RF3_VECTOR,
+   MPXS20_INTC_FLEXPWM1_COF3_VECTOR,
+   MPXS20_INTC_FLEXPWM1_CAF3_VECTOR,
+   MPXS20_INTC_FLEXPWM1_FFLAG_VECTOR,
+   MPXS20_INTC_FLEXPWM1_REF_VECTOR,
+
+   /* SEMA4 */
+   MPXS20_INTC_SEMA4_0_LOCFAILED_VECTOR,
+   MPXS20_INTC_SEMA4_1_LOCFAILED_VECTOR,
+
+   MPXS20_INTC_NOTUSED_249_VECTOR,
+
+   /* FCCU */
+   MPXS20_INTC_FCCU_ALRM_VECTOR,
+   MPXS20_INTC_FCCU_CFG_TO_VECTOR,
+   MPXS20_INTC_FCCU_RCC0_FAILURE_VECTOR,
+   MPXS20_INTC_FCCU_RCC1_FAILURE_VECTOR,
+
+   /* PMU */
+   MPXS20_INTC_PMU_VOLTMON_FAULT_VECTOR,
+
+   /* SWG */
+   MPXS20_INTC_SWG_SERR_VECTOR
+
+} MPXS20_INTERRUPT_VECTOR_TABLE;
+
+// Each PSP defines its own interrupt type. makes it hard to share drivers...
+typedef MPXS20_INTERRUPT_VECTOR_TABLE PSP_INTERRUPT_TABLE_INDEX;
+typedef MPXS20_INTERRUPT_VECTOR_TABLE IRQInterruptIndex;
+
+
+#endif /* __ASM__ */
+
+#define QINTC_FIRST_VECTOR      MPXS20_INTC_VECTOR_BASE
+#define QINTC_LAST_VECTOR       MPXS20_INTC_SWG_SERR_VECTOR
+
+/* The maximum number of hardware interrupt vectors */
+#ifdef PSP_MAXIMUM_INTERRUPT_VECTORS
+#undef PSP_MAXIMUM_INTERRUPT_VECTORS
+#endif
+#define PSP_MAXIMUM_INTERRUPT_VECTORS  (16)
+#define PSP_SKIP_INT_INSTALL_FOR_VECTORS	case PSP_EXCPT_MACHINE_CHECK:
+
+
+/*==========================================================================*/
+// Memory mapped peripherals
+#define MPXS20_SRAM_BASE                     (0x40000000)
+#define MPXS20_SRAM_CORE_0_BASE              (0x40000000)
+#define MPXS20_SRAM_CORE_1_BASE              (0x50000000)
+
+// On-platform 1 peripherals
+#define MPXS20_PBRIDGE_1_BASE                (0x8ff00000)
+#define MPXS20_XBAR_1_BASE                   (0x8ff04000)
+#define MPXS20_MPU_1_BASE                    (0x8ff10000)
+#define MPXS20_SEMA4_1_BASE                  (0x8ff24000)
+#define MPXS20_SWT_1_BASE                    (0x8ff38000)
+#define MPXS20_STM_1_BASE                    (0x8ff3c000)
+#define MPXS20_ECSM_1_BASE                   (0x8ff40000)
+#define MPXS20_INTC_1_BASE                   (0x8ff48000)
+
+// Off-platform peripherals
+#define MPXS20_FLASH0_BASE                   (0xc3f88000)
+#define MPXS20_SIUL_BASE                     (0xc3f90000)
+#define MPXS20_WKPU_BASE                     (0xc3f94000)
+#define MPXS20_SSCM_BASE                     (0xc3fd8000)
+#define MPXS20_MC_ME_BASE                    (0xc3fdc000)
+#define MPXS20_MC_CGM_BASE                   (0xc3fe0000)
+#define MPXS20_MC_RGM_BASE                   (0xc3fe4000)
+#define MPXS20_MC_PCU_BASE                   (0xc3fe8000)
+#define MPXS20_PIT_BASE                      (0xc3ff0000)
+#define MPXS20_STCU_BASE                     (0xc3ff4000)
+
+#define MPXS20_ADC_0_BASE                    (0xffe00000)
+#define MPXS20_ADC_1_BASE                    (0xffe04000)
+#define MPXS20_CTU_0_BASE                    (0xffe0c000)
+#define MPXS20_ETIMER_0_BASE                 (0xffe18000)
+#define MPXS20_ETIMER_1_BASE                 (0xffe1c000)
+#define MPXS20_ETIMER_2_BASE                 (0xffe20000)
+#define MPXS20_FLEXPWM_0_BASE                (0xffe24000)
+#define MPXS20_FLEXPWM_1_BASE                (0xffe28000)
+#define MPXS20_LINFLEXD_0_BASE               (0xffe40000)
+#define MPXS20_LINFLEXD_1_BASE               (0xffe44000)
+#define MPXS20_CRCU_0_BASE                   (0xffe68000)
+#define MPXS20_FCCU_BASE                     (0xffe6c000)
+#define MPXS20_SWG_BASE                      (0xffe78000)
+
+// On-platform 0 peripherals
+#define MPXS20_PBRIDGE_BASE                  (0xfff00000)
+#define MPXS20_XBAR_BASE                     (0xfff04000)
+#define MPXS20_MPU_BASE                      (0xfff10000)
+#define MPXS20_SEMA4_0_BASE                  (0xfff24000)
+#define MPXS20_SWT_BASE                      (0xfff38000)
+#define MPXS20_STM_BASE                      (0xfff3c000)
+#define MPXS20_ECSM_BASE                     (0xfff40000)
+#define MPXS20_DMA_BASE                      (0xfff44000)
+#define MPXS20_INTC_BASE                     (0xfff48000)
+
+// Off-platform peripherals
+#define MPXS20_DSPI_0_BASE                   (0xfff90000)
+#define MPXS20_DSPI_1_BASE                   (0xfff94000)
+#define MPXS20_DSPI_2_BASE                   (0xfff98000)
+#define MPXS20_CAN0_BASE                     (0xfffc0000)
+#define MPXS20_CAN1_BASE                     (0xfffc4000)
+#define MPXS20_DMACHMUX_BASE                 (0xfffdc000)
+#define MPXS20_FLEXRAY_BASE                  (0xfffe0000)
+#define MPXS20_BAM_BASE                      (0xffffc000)
+
+
+#define SEMA4_NUM_DEVICES                    2
+#define MPXSXX_ADC_NUM_DEVICES               2
+
+/*----------------------------------------------------------------------------*/
+
+/* MMU and Cache */
+
+// MPXS20 MMU page sizes.
+// Note MPXS20 allows 1K and 2K page sizes, but these sizes have restrictions on placement
+// Also, MPXS20 allows 4G pages size, but we can't use it, so we don't allow it
+#define E200CORE_MMU_MIN_PAGE_SIZE  (4*1024)
+#define E200CORE_MMU_MAX_PAGE_SIZE  (2*1024*1024)
+
+#define _mpxs30_mmu_init       _mmu_init
+#define _mpxs30_mmu_disable    _mmu_disable
+#define _mpxs30_mmu_enable     _mmu_enable
+#define _mpxs30_mmu_add_region _mmu_add_region
+#define _mpxs30_mmu_add_regions(x) _mmu_add_region(x,0,0)
+
+
+/* Pin definitions - 144 pin package */
+#define MPXS20_144_73    0
+#define MPXS20_144_74    1
+#define MPXS20_144_84    2
+#define MPXS20_144_92    3
+#define MPXS20_144_108   4
+#define MPXS20_144_14    5
+#define MPXS20_144_2     6
+#define MPXS20_144_10    7
+#define MPXS20_144_12    8
+#define MPXS20_144_134   9
+#define MPXS20_144_118  10
+#define MPXS20_144_120  11
+#define MPXS20_144_122  12
+#define MPXS20_144_136  13
+#define MPXS20_144_143  14
+#define MPXS20_144_144  15
+
+#define MPXS20_144_109  16
+#define MPXS20_144_110  17
+#define MPXS20_144_114  18
+#define MPXS20_144_116  19
+#define MPXS20_144_89   20
+#define MPXS20_144_86   21
+#define MPXS20_144_138  22
+#define MPXS20_144_43   23
+#define MPXS20_144_47   24
+#define MPXS20_144_52   25
+#define MPXS20_144_53   26
+#define MPXS20_144_54   27
+#define MPXS20_144_55   28
+#define MPXS20_144_60   29
+#define MPXS20_144_64   30
+#define MPXS20_144_62   31
+
+#define MPXS20_144_66   32
+#define MPXS20_144_41   33
+#define MPXS20_144_45   34
+#define MPXS20_144_11   36
+#define MPXS20_144_13   37
+#define MPXS20_144_142  38
+#define MPXS20_144_15   39
+#define MPXS20_144_111  42
+#define MPXS20_144_80   43
+#define MPXS20_144_82   44
+#define MPXS20_144_101  45
+#define MPXS20_144_103  46
+#define MPXS20_144_124  47
+
+#define MPXS20_144_125  48
+#define MPXS20_144_3    49
+#define MPXS20_144_140  50
+#define MPXS20_144_128  51
+#define MPXS20_144_129  52
+#define MPXS20_144_33   53
+#define MPXS20_144_34   54
+#define MPXS20_144_37   55
+#define MPXS20_144_32   56
+#define MPXS20_144_26   57
+#define MPXS20_144_76   58
+#define MPXS20_144_78   59
+#define MPXS20_144_99   60
+#define MPXS20_144_105  62
+
+#define MPXS20_144_68   64
+#define MPXS20_144_49   66
+#define MPXS20_144_42   68
+#define MPXS20_144_44   69
+#define MPXS20_144_46   70
+#define MPXS20_144_48   71
+#define MPXS20_144_61   73
+#define MPXS20_144_63   74
+#define MPXS20_144_65   75
+#define MPXS20_144_67   76
+#define MPXS20_144_117  77
+#define MPXS20_144_119  78
+#define MPXS20_144_121  79
+
+#define MPXS20_144_133  80
+#define MPXS20_144_139  83
+#define MPXS20_144_4    84
+#define MPXS20_144_5    85
+#define MPXS20_144_6    86
+#define MPXS20_144_19   87
+#define MPXS20_144_20   88
+#define MPXS20_144_23   89
+#define MPXS20_144_24   90
+#define MPXS20_144_25   91
+#define MPXS20_144_106  92
+#define MPXS20_144_112  93
+#define MPXS20_144_115  94
+#define MPXS20_144_113  95
+
+#define MPXS20_144_102  98
+#define MPXS20_144_104  99
+#define MPXS20_144_100 100
+#define MPXS20_144_85  101
+#define MPXS20_144_98  102
+#define MPXS20_144_83  103
+#define MPXS20_144_81  104
+#define MPXS20_144_79  105
+#define MPXS20_144_77  106
+#define MPXS20_144_75  107
+                       
+                       
+/* Pin definitions - 257 pin package */
+#define MPXS20_257_T14   0
+#define MPXS20_257_R14   1
+#define MPXS20_257_N16   2
+#define MPXS20_257_K17   3
+#define MPXS20_257_C16   4
+#define MPXS20_257_H4    5
+#define MPXS20_257_G4    6
+#define MPXS20_257_F3    7
+#define MPXS20_257_F4    8
+#define MPXS20_257_B6    9
+#define MPXS20_257_A13  10
+#define MPXS20_257_D11  11
+#define MPXS20_257_A10  12
+#define MPXS20_257_C6   13
+#define MPXS20_257_B4   14
+#define MPXS20_257_D3   15
+
+#define MPXS20_257_B15  16
+#define MPXS20_257_C14  17
+#define MPXS20_257_A14  18
+#define MPXS20_257_B13  19
+#define MPXS20_257_L17  20
+#define MPXS20_257_M15  21
+#define MPXS20_257_B3   22
+#define MPXS20_257_R5   23
+#define MPXS20_257_P7   24
+#define MPXS20_257_U7   25
+#define MPXS20_257_R8   26
+#define MPXS20_257_T8   27
+#define MPXS20_257_U8   28                   
+#define MPXS20_257_R10  29
+#define MPXS20_257_P11  30
+#define MPXS20_257_R11  31
+
+#define MPXS20_257_R12  32
+#define MPXS20_257_T4   33
+#define MPXS20_257_U5   34
+#define MPXS20_257_H3   36
+#define MPXS20_257_G3   37
+#define MPXS20_257_D4   38
+#define MPXS20_257_K4   39
+#define MPXS20_257_A15  42
+#define MPXS20_257_M14  43
+#define MPXS20_257_N15  44
+#define MPXS20_257_F15  45
+#define MPXS20_257_E15  46
+#define MPXS20_257_A8   47
+                        
+#define MPXS20_257_B8   48
+#define MPXS20_257_E3   49
+#define MPXS20_257_C5   50
+#define MPXS20_257_A7   51
+#define MPXS20_257_B7   52
+#define MPXS20_257_N3   53
+#define MPXS20_257_P3   54
+#define MPXS20_257_R4   55
+#define MPXS20_257_M3   56
+#define MPXS20_257_L3   57
+#define MPXS20_257_T15  58
+#define MPXS20_257_R16  59
+#define MPXS20_257_G14  60
+#define MPXS20_257_D16  62
+
+#define MPXS20_257_T13  64
+#define MPXS20_257_U6   66
+#define MPXS20_257_U4   68
+#define MPXS20_257_T5   69
+#define MPXS20_257_R6   70
+#define MPXS20_257_T6   71
+#define MPXS20_257_T10  73
+#define MPXS20_257_T11  74
+#define MPXS20_257_U11  75
+#define MPXS20_257_T12  76
+#define MPXS20_257_D12  77
+#define MPXS20_257_B12  78
+#define MPXS20_257_B11  79
+#define MPXS20_257_D7   80
+
+#define MPXS20_257_B5   83
+#define MPXS20_257_D2   84
+#define MPXS20_257_D1   85
+#define MPXS20_257_E2   86
+#define MPXS20_257_J1   87
+#define MPXS20_257_K2   88
+#define MPXS20_257_K1   89
+#define MPXS20_257_L1   90
+#define MPXS20_257_L2   91
+#define MPXS20_257_C17  92
+#define MPXS20_257_B14  93
+#define MPXS20_257_C13  94
+#define MPXS20_257_D13  95
+
+#define MPXS20_257_E16  98
+#define MPXS20_257_D17  99
+#define MPXS20_257_F17 100
+#define MPXS20_257_N17 101
+#define MPXS20_257_G17 102
+#define MPXS20_257_P17 103
+#define MPXS20_257_P16 104                        
+#define MPXS20_257_R17 105
+#define MPXS20_257_P15 106
+#define MPXS20_257_U15 107
+#define MPXS20_257_F2  108
+#define MPXS20_257_H1  109
+#define MPXS20_257_A6  110
+#define MPXS20_257_J2  111
+
+#define MPXS20_257_A5  112
+#define MPXS20_257_F1  113
+#define MPXS20_257_A4  114
+#define MPXS20_257_G1  115
+#define MPXS20_257_L16 116
+#define MPXS20_257_M17 117
+#define MPXS20_257_H17 118
+#define MPXS20_257_K16 119
+#define MPXS20_257_K15 120
+#define MPXS20_257_G16 121
+#define MPXS20_257_A11 122
+#define MPXS20_257_C11 123
+#define MPXS20_257_B10 124
+#define MPXS20_257_G15 125
+#define MPXS20_257_A12 126
+#define MPXS20_257_J17 127
+
+#define MPXS20_257_C9  128
+#define MPXS20_257_C12 129
+#define MPXS20_257_F16 130
+#define MPXS20_257_E17 131
+#define MPXS20_257_K3  132
+
+
+#define MPXS20_PADSEL_CTU0_EXT_IN                      0 
+#define MPXS20_PADSEL_DSPI2_SCK                        1 
+#define MPXS20_PADSEL_DSPI2_SIN                        2 
+#define MPXS20_PADSEL_DSPI2_CS0                        3 
+#define MPXS20_PADSEL_TIMER0_ETC_4                     7 
+#define MPXS20_PADSEL_TIMER0_ETC_5                     8 
+#define MPXS20_PADSEL_TIMER1_ETC_0                     9 
+#define MPXS20_PADSEL_TIMER1_ETC_1                    10
+#define MPXS20_PADSEL_TIMER1_ETC_2                    11
+#define MPXS20_PADSEL_ETIMER1_ETC_3                   12
+#define MPXS20_PADSEL_ETIMER1_ETC_4                   13
+#define MPXS20_PADSEL_ETIMER1_ETC_5                   14
+#define MPXS20_PADSEL_FLEXPWM0_EXT_SYNC               15
+#define MPXS20_PADSEL_FLEXPWM0_FAULT_0                16
+#define MPXS20_PADSEL_FLEXPWM0_FAULT_1                17
+#define MPXS20_PADSEL_FLEXPWM0_FAULT_3                19
+#define MPXS20_PADSEL_FLEXPWM0_A_0                    20
+#define MPXS20_PADSEL_FLEXPWM0_A_1                    21
+#define MPXS20_PADSEL_FLEXPWM0_A_2                    22
+#define MPXS20_PADSEL_FLEXPWM0_A_3                    23
+#define MPXS20_PADSEL_FLEXPWM0_B_0                    24
+#define MPXS20_PADSEL_FLEXPWM0_B_1                    25
+#define MPXS20_PADSEL_FLEXPWM0_B_2                    26
+#define MPXS20_PADSEL_FLEXPWM0_B_3                    27
+#define MPXS20_PADSEL_FLEXPWM0_X_1                    28
+#define MPXS20_PADSEL_FLEXPWM0_X_2                    29
+#define MPXS20_PADSEL_FLEXPWM0_X_3                    30
+#define MPXS20_PADSEL_LINFLEX0_RXD                    31
+#define MPXS20_PADSEL_LINFLEX1_RXD                    32
+#define MPXS20_PADSEL_FLEXCAN0_RXD                    33
+#define MPXS20_PADSEL_FLEXCAN1_RXD                    34
+#define MPXS20_PADSEL_ETIMER0_ETC_0                   35
+#define MPXS20_PADSEL_ETIMER0_ETC_1                   36
+#define MPXS20_PADSEL_ETIMER0_ETC_2                   37
+#define MPXS20_PADSEL_ETIMER0_ETC_3                   38
+#define MPXS20_PADSEL_ETIMER2_ETC_0                   39
+#define MPXS20_PADSEL_ETIMER2_ETC_1                   40
+#define MPXS20_PADSEL_ETIMER2_ETC_2                   41
+#define MPXS20_PADSEL_ETIMER2_ETC_3                   42
+
+
+#endif

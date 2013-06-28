@@ -1,0 +1,126 @@
+/* lcf file for PXS30 processors, running in DPM */
+
+MEMORY
+{
+    resetvector:           org = 0x00000000,   len = 0x00000008
+
+    exception_handlers_p0: org = 0x40000000,   len = 0x00001000
+    internal_ram:      	   org = 0x40001000,   len = 0x0000D000
+    stack :                org = 0x4001E000,   len = 0x00002000 /* Start location for Stack */
+
+    /* Kernel space starts after RAM variables (Location of MQX Kernel data + MQX heap) */
+    end_of_kd:             org = 0x4001DFF0,   len = 0x00000000
+
+    /* Split map for the second core */
+    exception_handlers_p1: org = 0x50000000,   len = 0x00001000
+    pseudo_rom_p1:         org = 0x50001000,   len = 0x00006000
+    internal_ram_p1:  	   org = 0x50007000,   len = 0x00010000
+    stack_p1 :             org = 0x5001E000,   len = 0x00002000 
+    /* Kernel space starts after RAM variables (Location of MQX Kernel data + MQX heap) */
+    end_of_kd_p1:          org = 0x5001DFF0,   len = 0x00000000
+}
+
+
+SECTIONS
+{
+ 
+/*
+    .__bam_bootarea LOAD (0x00000000): {} > resetvector
+*/
+
+    GROUP : {
+//      .intc_sw_isr_vector_table_p0 ALIGN (2048) : {}
+
+      .init : {}
+      .init_vle (VLECODE) : {
+        *(.init)
+        *(.init_vle)
+      }
+      .init_p1 : {}
+      .init_vle_p1 (VLECODE) : {
+        *(.init_p1)
+        *(.init_vle_p1)
+      }
+      .text : {} 
+      .text_vle (VLECODE) : {
+         *(.text)
+         *(.text_vle)
+      }
+
+       .text_p1  ALIGN(0x1000) : {}
+
+      .dispatch : { * (DISPATCH) }
+      .ipsum : { * (IPSUM) }
+
+      .rodata (CONST) : {
+         *(.rdata)
+         *(.rodata)
+      }
+  
+      .ctors : {}
+      .dtors : {}
+      extab : {}
+      extabindex : {}
+
+      .__uninitialized_intc_handlertable ALIGN(0x10) : {}
+
+      .data   : {}
+      .sdata  : {}
+      .sbss   : {}
+      .sdata2 : {}
+      .sbss2  : {}
+      .bss    : {}
+
+      .kernel_data : { __KERNEL_DATA_START = ALIGN(0x10); }
+
+    } > internal_ram
+
+    
+    GROUP : {
+      .ivor_branch_table_p0 ALIGN (2048) : {}
+      .intc_hw_branch_table_p0 ALIGN (2048) : {}           
+      .__exception_handlers_p0 : {}
+    } > exception_handlers_p0
+
+    GROUP : {
+      .ivor_branch_table_p1 ALIGN (2048) : {}
+      .intc_hw_branch_table_p1 ALIGN (2048) : {}           
+      .__exception_handlers_p1 : {}
+    } > exception_handlers_p1
+
+
+    .end_of_kernel_data :
+    {
+       __KERNEL_DATA_END = .;
+    } > end_of_kd
+   GROUP : {
+       .kernel_data_p1 : { __KERNEL_DATA_START_P1 = ALIGN(0x10); }
+    } > internal_ram_p1
+
+
+    .end_of_kernel_data_p1 :
+    {
+       __KERNEL_DATA_END_P1 = .;
+    } > end_of_kd_p1
+}
+
+__KERNEL_DATA_VERIFY_ENABLE = 0;  /* Test SDRAM read/write */
+
+__UNCACHED_DATA_START = __KERNEL_DATA_START;
+__UNCACHED_DATA_END = __KERNEL_DATA_END;
+
+_stack_addr = ADDR(stack)+SIZEOF(stack);
+_stack_end  = ADDR(stack);
+
+_stack_addr_p1 = ADDR(stack_p1)+SIZEOF(stack_p1);
+_stack_end_p1  = ADDR(stack_p1);
+
+
+/* Exceptions Handlers Location (used in Exceptions.c for IVPR initialization)*/
+EXCEPTION_HANDLERS    = ADDR(exception_handlers_p0);
+EXCEPTION_HANDLERS_P1 = ADDR(exception_handlers_p1);
+
+L2SRAM_LOCATION = 0x40000000;
+L2SRAM_INIT_LEN = 0;
+
+P1_SRAM_BASE = 0x50000000;

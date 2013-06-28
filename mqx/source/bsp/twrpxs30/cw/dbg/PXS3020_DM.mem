@@ -1,0 +1,146 @@
+// memory config file for PXS3020
+reservedchar 0x21	// display '!' for invalid reads
+
+//MM0 / MM1 Code flash array Bank 0, MM0/MM1 Code flash array Bank 0, MM0/MM1 Code flash array Bank 1, MM0 Code flash array Shadow sector
+//range		0x00000000 0x00203FFF 4 ReadWrite
+reserved	0x00204000 0x0027FFFF
+
+//MM1 Code flash array Shadow sector
+//range		0x00280000 0x00283FFF 4 ReadWrite
+reserved	0x00284000 0x003FFFFF
+
+//MM0 Code flash array Test sector
+//range		0x00400000 0x00403FFF 4 ReadWrite
+reserved	0x00404000 0x0047FFFF
+
+//MM1 Code flash array Test sector
+//range		0x00480000 0x00483FFF 4 ReadWrite
+reserved	0x00484000 0x007FFFFF
+
+//Data flash array
+//range		0x00800000 0x0080FFFF 4 ReadWrite
+reserved	0x00810000 0x00BFFFFF
+
+//Data flash array 0 Test sector
+//range		0x00C00000 0x00C01FFF 4 ReadWrite
+reserved	0x00C02000 0x00FFFFFF
+
+//Emulation
+//range		0x01000000 0x1FFFFFFF 4 ReadWrite
+
+//External Bus Interface (EBI)
+//range		0x20000000 0x2007FFFF 4 ReadWrite
+reserved	0x20080000 0x3FFFFFFF
+
+//SRAM (PXS3020, PXS3015) 256K
+range           0x40000000 0x4003FFFF 4 ReadWrite
+range           0x48000000 0x4803FFFF 4 ReadWrite // virtual SRAM space
+reserved	0x48040000 0x4FFFFFFF
+
+range	  	0x50000000 0x5003FFFF 4 ReadWrite
+range	  	0x58000000 0x5803FFFF 4 ReadWrite // virtual SRAM space
+reserved	0x58040000 0x5FFFFFFF
+
+//DRAM
+//range		0x60000000 0x7FFFFFFF 4 ReadWrite
+reserved	0x80000000 0x8FEFFFFF
+
+//PBRIDGE_1, XBAR_1
+//range		0x8FF00000 0x8FF07FFF 4 ReadWrite
+reserved	0x8FF08000 0x8FF0FFFF
+
+//Memory Protection Unit (MPU_1)
+//range		0x8FF10000 0x8FF13FFF 4 ReadWrite
+reserved	0x8FF14000 0x8FF23FFF
+
+//Semaphores (SEMA4_1)
+//range		0x8FF24000 0x8FF27FFF 4 ReadWrite
+reserved	0x8FF28000 0x8FF37FFF
+
+//Software Watchdog (SWT_1), System Timer Module (STM_1), Error Correction Status Module (ECSM_1), Direct Memory Access Controller (DMA_1), Interrupt Controller (INTC_1)
+//range		0x8FF38000 0x8FF4BFFF 4 ReadWrite
+reserved	0x8FF4C000 0xC3E3FFFF
+
+//Parallel Digital Interface (PDI)
+//range		0xC3E40000 0xC3E43FFF 4 ReadWrite
+reserved	0xC3E44000 0xC3E4FFFF
+
+//Analog to Digital Converter 2 (ADC_2), Analog to Digital Converter 3 (ADC_3)
+//range		0xC3E50000 0xC3E57FFF 4 ReadWrite
+reserved	0xC3E58000 0xC3E5bFFF
+
+//Cross Trigger Unit 1 (CTU_1), Cyclic Redundancy Check Unit 1 (CRCU_1)
+//range		0xC3E5C000 0xC3E63FFF	4 ReadWrite
+reserved	0xC3E64000 0xC3E73FFF
+
+//FlexPWM_2
+//range		0xC3E74000 0xC3E77FFF 4 ReadWrite
+reserved	0xC3E78000 0xC3F83FFF
+
+//External Bus Interface (EBI), Code Flash 0 Configuration (CFLASH0), Data Flash 0 Configuration (DFLASH0), System Integration Unit Lite (SIUL), WakeUp Unit (WKPU), Multi-Port DDR DRAM Controller (MDDRC)
+//range		0xC3F84000 0xC3F9BFFF 4 ReadWrite
+reserved	0xC3F9C000 0xC3FABFFF
+
+//DMA Channel Multiplexer 1 (DMACHMUX_1), Code Flash 1 Configuration (CFLASH1)
+//range		0xC3FAC000 0xC3FB3FFF 4 ReadWrite
+reserved	0xC3FB4000 0xC3FD7FFF
+
+//System Status and Configuration Module (SSCM), Mode Entry Module (MC_ME), Clock Generation Module (MC_CGM), Reset Generation Module (MC_RGM), Power Control Unit (MC_PCU)
+//range		0xC3FD8000 0xC3FEBFFF 4 ReadWrite
+reserved	0xC3FEC000 0xC3FEFFFF
+
+//Periodic Interrupt Timer (PIT), Self Test Control Unit (STCU)
+//range		0xC3FF0000 0xC3FF7FFF 4 ReadWrite
+reserved	0xC3FF8000 0xFFDFFFFF
+
+//Analog to Digital Converter 0 (ADC_0), Analog to Digital Converter 1 (ADC_1)
+//range		0xFFE00000 0xFFE07FFF 4 ReadWrite
+reserved	0xFFE08000 0xFFE0BFFF
+
+//Cross Triggering Unit (CTU_0)
+//range		0xFFE0C000 0xFFE0FFFF 4 ReadWrite
+reserved	0xFFE10000 0xFFE17FFF
+
+//eTimer_0, eTimer_1, eTimer_2, FlexPWM_0, FlexPWM_1
+//range		0xFFE18000 0xFFE2BFFF 4 ReadWrite
+reserved	0xFFE2C000 0xFFE2FFFF
+
+//Inter-IC Bus Interface Controller 0 (I2C0), Inter-IC bus interface controller 1 (I2C1), Inter-IC bus interface controller 2 (I2C2)
+//range		0xFFE30000 0xFFE3BFFF 4 ReadWrite
+reserved	0xFFE3C000 0xFFE3FFFF
+
+//LINFlexD_0, LINFlexD_1, LINFlexD_2, LINFlexD_3
+//range		0xFFE40000 0xFFE4FFFF 4 ReadWrite
+reserved	0xFFE50000 0xFFE67FFF
+
+//Cyclic Redundancy Check Unit 0 (CRCU_0), Fault Collection and Control Unit (FCCU)
+//range		0xFFE68000 0xFFE6FFFF 4 ReadWrite
+reserved	0xFFE70000 0xFFEFFFFF
+
+//PBRIDGE_0, PBRIDGE_1, XBAR_0, XBAR_1 ----- LS
+//range		0xFFF00000 0xFFF07FFF 4 ReadWrite
+reserved	0xFFF08000 0xFFF0FFFF
+
+//Memory Protection Unit (MPU_0), Memory Protection Unit (MPU_1)---LS
+//range		0xFFF10000 0xFFF13FFF 4 ReadWrite
+reserved	0xFFF14000 0xFFF27FFF
+
+//Software Watchdog (SWT_0), Software Watchdog (SWT_1)
+//range		0xFFF38000 0xFFF53FFF 4 ReadWrite
+reserved	0xFFF54000 0xFFF8FFFF
+
+//DSPI_0, DSPI_1, DSPI_2
+//range		0xFFF90000 0xFFF9BFFF 4 ReadWrite
+reserved	0xFFF9C000 0xFFFBFFFF
+
+//FlexCAN 0 (CAN0), FlexCAN 1 (CAN1), FlexCAN 2 (CAN2), FlexCAN 3 (CAN3)
+//range		0xFFFC0000 0xFFFCFFFF 4 readWrite
+reserved	0xFFFD0000 0xFFFDBFFF
+
+//DMA Channel Multiplexer 0 (DMACHMUX_0), DMA Channel Multiplexer 1 (DMACHMUX_1), FlexRay Controller (FlexRay)
+//range		0xFFFDC000 0xFFFE3FFF 4 ReadWrite
+reserved	0xFFFE4000 0xFFFFBFFF
+
+//Boot Assist Module (BAM)
+//range		0xFFFFC000 0xFFFFFFFF 4 ReadWrite
+

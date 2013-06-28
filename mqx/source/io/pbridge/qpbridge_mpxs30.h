@@ -1,0 +1,111 @@
+/**HEADER********************************************************************
+* 
+* Copyright (c) 2008-2011 Freescale Semiconductor;
+* All Rights Reserved                       
+*
+* Copyright (c) 2004-2011 Embedded Access Inc.;
+* All Rights Reserved
+*
+*************************************************************************** 
+*
+* THIS SOFTWARE IS PROVIDED BY FREESCALE "AS IS" AND ANY EXPRESSED OR 
+* IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  
+* IN NO EVENT SHALL FREESCALE OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+* INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
+* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) 
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING 
+* IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF 
+* THE POSSIBILITY OF SUCH DAMAGE.
+*
+**************************************************************************
+*
+* $FileName: qpbridge_mpxs30.h$
+* $Version : 3.8.1.0$
+* $Date    : Oct-5-2011$
+*
+* Comments:
+*
+*   This file contains the device IDs for the MPX PBRIDGE module.
+*
+*END************************************************************************/
+
+#ifndef __qpbridge_mpxs30_h__
+#define __qpbridge_mpxs30_h__
+
+#define __qpbridge_mpxs30_h__version "$Version:3.8.1.0$"
+#define __qpbridge_mpxs30_h__date    "$Date:Oct-5-2011$"
+
+#define MPXS30_PBRIDGE_CORE_0                 QPBRIDGE_MPROT_FLAG|0
+#define MPXS30_PBRIDGE_CORE_1                 QPBRIDGE_MPROT_FLAG|1
+#define MPXS30_PBRIDGE_DMA_0                  QPBRIDGE_MPROT_FLAG|2
+#define MPXS30_PBRIDGE_FLEXRAY                QPBRIDGE_MPROT_FLAG|3
+#define MPXS30_PBRIDGE_FEC                    QPBRIDGE_MPROT_FLAG|4
+#define MPXS30_PBRIDGE_PDI                    QPBRIDGE_MPROT_FLAG|5
+#define MPXS30_PBRIDGE_DMA_1                  QPBRIDGE_MPROT_FLAG|6
+#define MPXS30_PBRIDGE_NEXUS_0                QPBRIDGE_MPROT_FLAG|8
+#define MPXS30_PBRIDGE_NEXUS_1                QPBRIDGE_MPROT_FLAG|9
+
+#define MPXS30_PBRIDGE_PBRIDGE                QPBRIDGE_PACR_FLAG|0 
+#define MPXS30_PBRIDGE_XBAR                   QPBRIDGE_PACR_FLAG|1 
+#define MPXS30_PBRIDGE_MPU                    QPBRIDGE_PACR_FLAG|4
+#define MPXS30_PBRIDGE_SEMA4                  QPBRIDGE_PACR_FLAG|9
+#define MPXS30_PBRIDGE_SWT                    QPBRIDGE_PACR_FLAG|14
+#define MPXS30_PBRIDGE_STM                    QPBRIDGE_PACR_FLAG|15
+#define MPXS30_PBRIDGE_ECSM                   QPBRIDGE_PACR_FLAG|16
+#define MPXS30_PBRIDGE_EDMA                   QPBRIDGE_PACR_FLAG|17
+#define MPXS30_PBRIDGE_INTC                   QPBRIDGE_PACR_FLAG|18
+
+#define MPXS30_PBRIDGE_DSPI_0                 QPBRIDGE_OPACR_FLAG|4  
+#define MPXS30_PBRIDGE_DSPI_1                 QPBRIDGE_OPACR_FLAG|5  
+#define MPXS30_PBRIDGE_DSPI_2                 QPBRIDGE_OPACR_FLAG|6  
+#define MPXS30_PBRIDGE_FLEXCAN_0              QPBRIDGE_OPACR_FLAG|16 
+#define MPXS30_PBRIDGE_FLEXCAN_1              QPBRIDGE_OPACR_FLAG|17 
+#define MPXS30_PBRIDGE_FLEXCAN_2              QPBRIDGE_OPACR_FLAG|18 
+#define MPXS30_PBRIDGE_FLEXCAN_3              QPBRIDGE_OPACR_FLAG|19 
+#define MPXS30_PBRIDGE_DMA_MUX                QPBRIDGE_OPACR_FLAG|23 
+#define MPXS30_PBRIDGE_FLEXRAY_CONTROLLER     QPBRIDGE_OPACR_FLAG|24 
+#define MPXS30_PBRIDGE_BAM                    QPBRIDGE_OPACR_FLAG|31 
+#define MPXS30_PBRIDGE_ADC_0                  QPBRIDGE_OPACR_FLAG|32 
+#define MPXS30_PBRIDGE_ADC_1                  QPBRIDGE_OPACR_FLAG|33 
+#define MPXS30_PBRIDGE_CTU_0                  QPBRIDGE_OPACR_FLAG|35 
+#define MPXS30_PBRIDGE_ETIMER_0               QPBRIDGE_OPACR_FLAG|38 
+#define MPXS30_PBRIDGE_ETIMER_1               QPBRIDGE_OPACR_FLAG|39 
+#define MPXS30_PBRIDGE_ETIMER_2               QPBRIDGE_OPACR_FLAG|40 
+#define MPXS30_PBRIDGE_FLEXPWM_0              QPBRIDGE_OPACR_FLAG|41 
+#define MPXS30_PBRIDGE_FLEXPWM_1              QPBRIDGE_OPACR_FLAG|42 
+#define MPXS30_PBRIDGE_I2C_0                  QPBRIDGE_OPACR_FLAG|44 
+#define MPXS30_PBRIDGE_I2C_1                  QPBRIDGE_OPACR_FLAG|45 
+#define MPXS30_PBRIDGE_I2C_2                  QPBRIDGE_OPACR_FLAG|46 
+#define MPXS30_PBRIDGE_LINFLEXD_0             QPBRIDGE_OPACR_FLAG|48 
+#define MPXS30_PBRIDGE_LINFLEXD_1             QPBRIDGE_OPACR_FLAG|49 
+#define MPXS30_PBRIDGE_LINFLEXD_2             QPBRIDGE_OPACR_FLAG|50 
+#define MPXS30_PBRIDGE_LINFLEXD_3             QPBRIDGE_OPACR_FLAG|51 
+#define MPXS30_PBRIDGE_CRC                    QPBRIDGE_OPACR_FLAG|58 
+#define MPXS30_PBRIDGE_FCCU                   QPBRIDGE_OPACR_FLAG|59 
+#define MPXS30_PBRIDGE_EBI                    QPBRIDGE_OPACR_FLAG|65 
+#define MPXS30_PBRIDGE_CFLASH_0               QPBRIDGE_OPACR_FLAG|66 
+#define MPXS30_PBRIDGE_DFLASH_0               QPBRIDGE_OPACR_FLAG|67 
+#define MPXS30_PBRIDGE_SIUL                   QPBRIDGE_OPACR_FLAG|68 
+#define MPXS30_PBRIDGE_WKPU                   QBRIDGE_OPACR_FLAG|69 
+#define MPXS30_PBRIDGE_MDDRC                  QPBRIDGE_OPACR_FLAG|70 
+#define MPXS30_PBRIDGE_DMACHMUX_1             QPBRIDGE_OPACR_FLAG|75 
+#define MPXS30_PBRIDGE_CFLASH_1               QPBRIDGE_OPACR_FLAG|76 
+#define MPXS30_PBRIDGE_SSCM                   QPBRIDGE_OPACR_FLAG|86 
+#define MPXS30_PBRIDGE_MC_ME                  QPBRIDGE_OPACR_FLAG|87 
+#define MPXS30_PBRIDGE_MC_CGM                 QPBRIDGE_OPACR_FLAG|88 
+#define MPXS30_PBRIDGE_MC_RGM                 QPBRIDGE_OPACR_FLAG|89 
+#define MPXS30_PBRIDGE_PCU                    QPBRIDGE_OPACR_FLAG|90 
+#define MPXS30_PBRIDGE_PIT                    QPBRIDGE_OPACR_FLAG|92 
+#define MPXS30_PBRIDGE_STCU                   QPBRIDGE_OPACR_FLAG|93 
+#define MPXS30_PBRIDGE_PDI_DEVICE             QPBRIDGE_OPACR_FLAG|112
+#define MPXS30_PBRIDGE_ADC_2                  QPBRIDGE_OPACR_FLAG|116
+#define MPXS30_PBRIDGE_ADC_3                  QPBRIDGE_OPACR_FLAG|117
+#define MPXS30_PBRIDGE_CTU_1                  QPBRIDGE_OPACR_FLAG|119
+#define MPXS30_PBRIDGE_CRCU_1                 QPBRIDGE_OPACR_FLAG|120
+#define MPXS30_PBRIDGE_FLEXPWM_2              QPBRIDGE_OPACR_FLAG|125
+    
+#endif
+

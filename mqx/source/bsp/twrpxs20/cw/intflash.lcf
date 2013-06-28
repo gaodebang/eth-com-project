@@ -1,0 +1,101 @@
+/* lcf file for PXS2010 processors, running in LSM */
+
+MEMORY
+{
+    resetvector:           org = 0x00000000,   len = 0x00000008
+    
+    internal_flash:        org = 0x00003000,   len = 0x000FD000
+
+    exception_handlers_p0: org = 0x40000000,   len = 0x00001000
+    internal_ram:          org = 0x40001000,   len = 0x0001D000
+    stack :                org = 0x4001E000,   len = 0x00002000 /* z4 Start location for Stack */
+
+    /* Kernel space starts after RAM variables (Location of MQX Kernel data + MQX heap) */
+    end_of_kd:             org = 0x4001DFF0,   len = 0x00000000
+}
+
+/* This will ensure the rchw and reset vector are not stripped by the linker */
+FORCEACTIVE { "bam_rchw" "bam_resetvector" }
+
+SECTIONS
+{
+    .__bam_bootarea LOAD (0x00000000): {} > resetvector
+
+    GROUP : {
+/*
+      .intc_sw_isr_vector_table_p0 ALIGN (2048) : {}
+*/
+
+      .init : {}
+      .init_vle (VLECODE) : {
+        *(.init)
+        *(.init_vle)
+      }
+
+      .text : {} 
+      .text_vle (VLECODE) : {
+         *(.text)
+         *(.text_vle)
+      }
+
+      .dispatch : { * (DISPATCH) }
+      .ipsum : { * (IPSUM) }
+
+      .rodata (CONST) : {
+         *(.rdata)
+         *(.rodata)
+      }
+  
+      .ctors : {}
+      .dtors : {}
+      extab : {}
+      extabindex : {}
+    } > internal_flash
+
+    /* Note the intc_hw_branch_table, if used, MUST be loaded at the */
+    /* IVPR + 2KB (0x800)  That means if the code loaded into the    */
+    /* .__exception_handlers_p* section is larger than 0x700 bytes,  */
+    /* the following group(s) must be reconfigured.                  */
+    
+    GROUP : {
+      .ivor_branch_table_p0 ALIGN (2048) : {}
+      .intc_hw_branch_table_p0 ALIGN (2048) : {}           
+      .__exception_handlers_p0 : {}
+/*
+      .ivor_branch_table_p0 LOAD (0x00001000)   : {}
+      .intc_hw_branch_table_p0 LOAD (0x00001800): {}           
+      .__exception_handlers_p0 LOAD (0x00001100) : {}
+*/
+    } > exception_handlers_p0
+
+    GROUP : {
+       .__uninitialized_intc_handlertable ALIGN(2048) : {}
+       .data   : {}
+       .sdata  : {}
+       .sbss   : {}
+       .sdata2 : {}
+       .sbss2  : {}
+       .bss    : {}
+       .kernel_data : { __KERNEL_DATA_START = ALIGN(0x10); }
+    } > internal_ram
+
+    .end_of_kernel_data :
+    {
+       __KERNEL_DATA_END = .;
+    } > end_of_kd
+}
+
+__KERNEL_DATA_VERIFY_ENABLE = 0;  /* Test SDRAM read/write */
+
+__UNCACHED_DATA_START = __KERNEL_DATA_START;
+__UNCACHED_DATA_END = __KERNEL_DATA_END;
+
+_stack_addr = ADDR(stack)+SIZEOF(stack);
+_stack_end  = ADDR(stack);
+
+/* Exceptions Handlers Location (used in Exceptions.c for e200z1 IVPR initialization)*/
+
+EXCEPTION_HANDLERS    = ADDR(exception_handlers_p0);
+
+L2SRAM_LOCATION = 0x40000000;
+L2SRAM_INIT_LEN = 0x20000;

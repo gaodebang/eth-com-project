@@ -1,0 +1,97 @@
+/* lcf file for PXS2010 processors, running in LSM (second core unused)    */
+
+MEMORY
+{
+    resetvector:           org = 0x00000000,   len = 0x00000008
+
+    exception_handlers_p0: org = 0x40000000,   len = 0x00001000
+    internal_ram:      	   org = 0x40001000,   len = 0x0001D000
+    stack :                org = 0x4001E000,   len = 0x00002000 /* Start location for Stack */
+
+    /* Kernel space starts after RAM variables (Location of MQX Kernel data + MQX heap) */
+    end_of_kd:             org = 0x4001DFF0,   len = 0x00000000
+}
+
+
+SECTIONS
+{
+ 
+/*
+    .__bam_bootarea LOAD (0x00000000): {} > resetvector
+*/
+
+    GROUP : {
+
+      .ivor_branch_table_p0 ALIGN (2048) : {}
+      .intc_hw_branch_table_p0 ALIGN (2048) : {}           
+      .__exception_handlers_p0 : {}
+
+    } > exception_handlers_p0
+
+
+    GROUP : {
+
+      .intc_sw_isr_vector_table_p0 ALIGN (2048) : {}
+
+      .init  : {}
+      .init_vle (VLECODE) : {
+        *(.init)
+        *(.init_vle)
+      }
+
+      .text (TEXT) ALIGN(0x1000) : {}
+      .text_vle (VLECODE) ALIGN(0x1000): {
+         *(.text)
+         *(.text_vle)
+      }
+
+      .dispatch : { * (DISPATCH) }
+      .ipsum : { * (IPSUM) }
+
+      .rodata (CONST) : {
+         *(.rdata)
+         *(.rodata)
+      }
+
+      .ctors : {}
+      .dtors : {}
+      extab : {}
+      extabindex : {}
+
+      .__uninitialized_intc_handlertable ALIGN(0x10) : {}
+
+      .data   : {}
+      .sdata  : {}
+      .sbss   : {}
+      .sdata2 : {}
+      .sbss2  : {}
+      .bss    : {}
+
+      .kernel_data : { __KERNEL_DATA_START = ALIGN(0x10); }
+
+    } > internal_ram
+
+
+    .end_of_kernel_data :
+    {
+       __KERNEL_DATA_END = .;
+    } > end_of_kd
+
+}
+
+
+__KERNEL_DATA_VERIFY_ENABLE = 0;  /* Test SDRAM read/write */
+
+__UNCACHED_DATA_START = __KERNEL_DATA_START;
+__UNCACHED_DATA_END = __KERNEL_DATA_END;
+
+
+_stack_addr = ADDR(stack)+SIZEOF(stack);
+_stack_end  = ADDR(stack);
+
+
+/* Exceptions Handlers Location (used in Exceptions.c for IVPR initialization) */
+EXCEPTION_HANDLERS = ADDR(exception_handlers_p0);
+
+L2SRAM_LOCATION = 0x40000000;
+L2SRAM_INIT_LEN = 0;

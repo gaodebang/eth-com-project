@@ -1,0 +1,108 @@
+/* lcf file for MPXS30 processors, running MQX in DPM   */
+
+MEMORY
+{
+    resetvector:           org = 0x00000000,   len = 0x00000008
+    internal_flash:        org = 0x00003000,   len = 0x000fd000
+    cached_ram:            org = 0x48000000,   len = 0x0003b000
+    stack :                org = 0x4803b000,   len = 0x00000c00 /* Start location for Stack */
+
+    /* Kernel space starts after RAM variables (Location of MQX Kernel data + MQX heap) */
+    end_of_kd:             org = 0x4803aff0,   len = 0x00000000
+
+    shared_ram :           org = 0x4803b000,   len = 0x00001000
+    uncached_ram :         org = 0x4803c000,   len = 0x00004000
+}
+
+/* This will ensure the rchw and reset vector are not stripped by the linker */
+FORCEACTIVE { "bam_rchw" "bam_resetvector" }
+
+SECTIONS
+{
+    .__bam_bootarea LOAD (0x00000000): {} > resetvector
+
+    GROUP : {
+//      .intc_sw_isr_vector_table_p0 ALIGN (2048) : {}
+
+      .init : {}
+      .init_vle (VLECODE) : {
+        *(.init)
+        *(.init_vle)
+      }
+      .init_p1 : {}
+      .init_vle_p1 (VLECODE) : {
+        *(.init_p1)
+        *(.init_vle_p1)
+      }
+      .text : {}
+      .text_vle (VLECODE) : {
+         *(.text)
+         *(.text_vle)
+      }
+
+       .text_p1  ALIGN(0x1000) : {}
+
+      .dispatch : { * (DISPATCH) }
+      .ipsum : { * (IPSUM) }
+
+      .rodata (CONST) : {
+         *(.rdata)
+         *(.rodata)
+      }
+
+      .ctors : {}
+      .dtors : {}
+      extab : {}
+      extabindex : {}
+    } > internal_flash
+
+    /* Note the intc_hw_branch_table, if used, MUST be loaded at the */
+    /* IVPR + 2KB (0x800)  That means if the code loaded into the    */
+    /* .__exception_handlers_p* section is larger than 0x700 bytes,  */
+    /* the following group(s) must be reconfigured.                  */
+
+    GROUP : {
+      .ivor_branch_table ALIGN (2048) : {}
+      .intc_hw_branch_table ALIGN (2048) : {}
+      .__exception_handlers : {}
+
+       .__uninitialized_intc_handlertable ALIGN(2048) : {}
+       .data   : {}
+       .sdata  : {}
+       .sbss   : {}
+       .sdata2 : {}
+       .sbss2  : {}
+       .bss    : {}
+       .kernel_data : { __KERNEL_DATA_START = ALIGN(0x10); }
+    } > cached_ram
+
+    .end_of_kernel_data :
+    {
+       __KERNEL_DATA_END = .;
+    } > end_of_kd
+
+}
+
+// Definitions for MQX
+__KERNEL_DATA_VERIFY_ENABLE = 0;  /* Test SDRAM read/write */
+
+// Definitions for MMU
+__PRIVATE_RAM_START = ADDR(cached_ram);
+__PRIVATE_RAM_SIZE = SIZEOF(cached_ram);
+
+__SHARED_RAM_START = ADDR(shared_ram);
+__SHARED_RAM_SIZE = SIZEOF(shared_ram);
+
+__UNCACHED_DATA_START = ADDR(uncached_ram);
+__UNCACHED_DATA_SIZE = SIZEOF(uncached_ram);
+__UNCACHED_DATA_END = ADDR(uncached_ram)+SIZEOF(uncached_ram);
+
+// Definitions for C runtime startup
+_stack_addr = ADDR(stack)+SIZEOF(stack);
+_stack_end  = ADDR(stack);
+
+/* Exceptions Handlers Location (used in Exceptions.c for IVPR initialization)*/
+EXCEPTION_HANDLERS    = ADDR(cached_ram);
+
+L2SRAM_LOCATION = 0x48000000;
+L2SRAM_INIT_LEN = 0x40000;

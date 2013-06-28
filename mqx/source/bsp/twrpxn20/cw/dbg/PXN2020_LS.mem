@@ -1,0 +1,141 @@
+// memory config file for PXN2020
+reservedchar 0x21	// display '!' for invalid reads
+
+//Program/Data Flash LAS Block
+//range 0x00000000 0x0003FFFF 4 ReadWrite
+
+//Program/Data Flash MAS Block
+//range 0x00040000 0x001FFFFF 4 ReadWrite
+
+reserved 0x00200000 0x00FFBFFF
+
+// Shadow Row
+//range 0x00FFC000 0x00FFFFFF 4 ReadWrite
+
+// Flash Emulation Mapping
+range 0x01000000 0x1FFFFFFF 4 ReadWrite 
+
+// Reserved for External Bus Interface
+range 0x20000000 0x3FFFFFFF 4 ReadWrite 
+
+// This 1 MB address space is mirrored 512 times in the
+// address range 0x40000000 to 0x5FFFFFFF
+
+// SRAM (AXBS Port S2) 512 KB
+//range 0x40000000 0x4007FFFF 4 ReadWrite
+//(AXBS Port S3) 80 KB
+//range 0x40080000 0x40093FFF 4 ReadWrite
+// 432 KB
+reserved 0x40094000 0x400FFFFF 
+
+// Mirrored address space 512 x 1 MB
+//range 0x40100000 0x5FFFFFFF 4 ReadWrite
+reserved 0x60000000 0xBFFFFFFF
+
+// Peripherals AIPSA (AXBS Port S6)
+reserved 0xC0000000 0xC3EFFFFF
+reserved 0xC3F00000 0xC3F03FFF
+reserved 0xC3F04000 0xC3F7FFFF
+reserved 0xC3F80000 0xC3F83FFF
+
+// MLBDIM Configuration X
+//range 0xC3F84000 0xC3F87FFF 4 ReadWrite
+
+//I2CC
+//range 0xC3F88000 0xC3F8BFFF 4 ReadWrite
+
+// I2CD
+//range 0xC3F8C000 0xC3F8FFFF 4 ReadWrite
+
+// DSPI C/D
+//range 0xC3F90000 0xC3F97FFF  4 ReadWrite
+
+reserved 0xC3F98000 0xC3F9FFFF
+
+reserved 0xC3FB0000 0xC3FDBFFF
+
+// FlexRay
+//range 0xC3FDC000 0xC3FDFFFF 4 ReadWrite
+
+reserved 0xC3FE0000 0xDFFFFFFF
+
+//Peripherals AIPSB (AXBS Port S7)
+reserved 0xE0000000 0xFFF03FFF
+
+// AXBS
+//range 0xFFF04000 0xFFF07FFF 4 ReadWrite
+
+reserved 0xFFF08000 0xFFF0FFFF
+
+// Sema4
+//range 0xFFF10000 0xFFF13FFF 4 ReadWrite
+
+reserved 0xFFF18000 0xFFF37FFF
+
+// SWT 
+//range 0xFFF38000 0xFFF3BFFF 4 ReadWrite
+
+// STM
+//range 0xFFF3C000 0xFFF3FFFF 4 ReadWrite
+
+// ECSM
+//range 0xFFF40000 0xFFF43FFF 4 ReadWrite
+
+//eDMA ch 16–31
+//range 0xFFF44000 0xFFF47FFF 4 ReadWrite
+
+// INTC
+//range 0xFFF48000 0xFFF4BFFF 4 ReadWrite
+
+// FEC
+//range 0xFFF4C000 0xFFF4FFFF 4 ReadWrite
+
+reserved 0xFFF50000 0xFFF7FFFF
+
+// ADC A
+//range 0xFFF80000 0xFFF83FFF 4 ReadWrite
+
+reserved 0xFFF84000 0xFFF87FFF
+
+// I2C A/B
+//range 0xFFF88000 0xFFF8FFFF 4 ReadWrite
+
+// DSPI A/B
+//range 0xFFF90000 0xFFF97FFF 4 ReadWrite
+
+reserved 0xFFF98000 0xFFF9FFFF
+
+// eSCI A/B/C/D/E/F
+//range 0xFFFA0000 0xFFFB7FFF 4 ReadWrite
+
+// FlexCan A/B/C/D/E
+//range 0xFFFC0000 0xFFFD3FFF 4 ReadWrite
+
+//  FlexCan F
+//range 0xFFFD4000 0xFFFD7FFF 4 ReadWrite
+
+// DMA MUX
+//range 0xFFFDC000 0xFFFDFFFF  4 ReadWrite
+
+//PIT
+//range 0xFFFE0000 0xFFFE3FFF 4 ReadWrite
+
+//eMIOSA Channels
+//range 0xFFFE4000 0xFFFE7FFF 4 ReadWrite
+
+// SIU
+//range 0xFFFE8000 0xFFFEBFFF 4 ReadWrite
+
+// CRP
+//range 0xFFFEC000 0xFFFEFFFF 4 ReadWrite
+
+//PLL
+//range 0xFFFF0000 0xFFFF3FFF 4 ReadWrite
+
+reserved 0xFFFF4000 0xFFFF7FFF
+
+// PFlash Configuration
+//range 0xFFFF8000 0xFFFFBFFF 4 ReadWrite
+
+//BAM (upper 8K)
+//range 0xFFFFC000 0xFFFFFFFF 4 ReadWrite

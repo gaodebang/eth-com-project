@@ -79,14 +79,6 @@ void taskinit_task (uint_32 initial_data)
 				_task_block();
 		}
 
-    option = FALSE;   
-    error = setsockopt(listensock, SOL_TCP, OPT_RECEIVE_NOWAIT, &option, sizeof(uint_32));
-		if(error != RTCS_OK)
-		{
-				printf("\n Set socket failure \n");
-				_task_block();
-		}
-		
 		((sockaddr_in*)(&addr))->sin_family         = PF_INET;
 		((sockaddr_in*)(&addr))->sin_port           = 2020;
 		((sockaddr_in*)(&addr))->sin_addr.s_addr    = INADDR_ANY;
@@ -96,7 +88,15 @@ void taskinit_task (uint_32 initial_data)
 				printf("\n Bind socket failure \n");
 				_task_block();
 		}
-		
+
+    option = FALSE;   
+    error = setsockopt(listensock, SOL_TCP, OPT_RECEIVE_NOWAIT, &option, sizeof(uint_32));
+		if(error != RTCS_OK)
+		{
+				printf("\n Set socket failure \n");
+				_task_block();
+		}
+				
 		error = listen(listensock, 0);
 		if(error != RTCS_OK)
 		{
