@@ -16,6 +16,8 @@
 #define TASKINIT_TASK 		5
 #define TCPSERVER_TASK 		6
 
+uint_32 SOCKET_NUM = 0;
+
 extern void taskinit_task(uint_32);
 extern void tcpserver_task(uint_32);
 
@@ -23,7 +25,7 @@ extern void tcpserver_task(uint_32);
 const TASK_TEMPLATE_STRUCT  MQX_template_list[] = 
 { 
 		/* Task Index,   			Function,   			Stack,  Priority, 	Name,     						Attributes,          	Param, Time Slice */
-    { TASKINIT_TASK,   		taskinit_task, 		1500,   9,      		"init tasks",  				MQX_AUTO_START_TASK, 	0,     0 },
+    { TASKINIT_TASK,   		taskinit_task, 		1500,   9,      		"init tasks",  				MQX_AUTO_START_TASK|MQX_TIME_SLICE_TASK, 	0,     10 },
     { TCPSERVER_TASK,   	tcpserver_task,  	3000,   10,        	"tcpserver task",  		0, 										0,     0 },	
     { 0 }
 };
@@ -37,7 +39,7 @@ const TASK_TEMPLATE_STRUCT  MQX_template_list[] =
 *END*-----------------------------------------------------*/
 void taskinit_task (uint_32 initial_data)
 {	
-		uint_32          listensock, error, option, sock, tempsock;
+		uint_32          listensock, error, sock;
 		sockaddr         addr;
 		_task_id 				 task_id;
 		
@@ -88,15 +90,7 @@ void taskinit_task (uint_32 initial_data)
 				printf("\n Bind socket failure \n");
 				_task_block();
 		}
-
-    option = FALSE;   
-    error = setsockopt(listensock, SOL_TCP, OPT_RECEIVE_NOWAIT, &option, sizeof(uint_32));
-		if(error != RTCS_OK)
-		{
-				printf("\n Set socket failure \n");
-				_task_block();
-		}
-				
+		
 		error = listen(listensock, 0);
 		if(error != RTCS_OK)
 		{
@@ -107,25 +101,32 @@ void taskinit_task (uint_32 initial_data)
 		{
 				printf("\n Listen socket success \n");
 		}
-		
+
 	  while(1)
 	  {
 		  /* Wait for a connection */
 		  sock= accept(listensock, NULL, NULL);
-		  tempsock = sock;
-		  if (sock != RTCS_SOCKET_ERROR)
-			{
-				task_id = _task_create(0, TCPSERVER_TASK, sock);
-				if (task_id != MQX_NULL_TASK_ID)
-				{
-					printf("\n Socket task create success \n");
-				}
-		  }
-		  else
+		  if(SOCKET_NUM<4)
 		  {
-		  	printf("\n Socket accept failure \n");
-       	_task_block();
-		  }
+			  if (sock != RTCS_SOCKET_ERROR)
+				{
+					task_id = _task_create(0, TCPSERVER_TASK, sock);
+					if (task_id != MQX_NULL_TASK_ID)
+					{
+						printf("\n Socket task create success \n");
+						SOCKET_NUM++;
+					}
+			  }
+			  else
+			  {
+			  	printf("\n Socket accept failure \n");
+	       	_task_block();
+			  }
+			}
+			else
+			{
+				shutdown(sock, FLAG_CLOSE_TX);
+			}
 		}
 }
 
@@ -149,13 +150,15 @@ void tcpserver_task(uint_32 initial_data)
 			error = RTCS_geterror(initial_data);
 		  if(error == RTCS_OK)
 		  {
-		  	_task_destroy(MQX_NULL_TASK_ID);
 		  	shutdown(initial_data, FLAG_CLOSE_TX);
+		  	if(SOCKET_NUM--);
+		  	_task_destroy(MQX_NULL_TASK_ID);
 		  }
 		  else
 		  {
-		  	_task_destroy(MQX_NULL_TASK_ID);
 		  	shutdown(initial_data, FLAG_CLOSE_TX);
+		  	if(SOCKET_NUM--);
+		  	_task_destroy(MQX_NULL_TASK_ID);
 		  }
 		}
 	  send(initial_data, data_buffer, count, 0);
