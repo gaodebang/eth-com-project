@@ -115,8 +115,6 @@ void taskinit_task (uint_32 initial_data)
 		  tempsock = sock;
 		  if (sock != RTCS_SOCKET_ERROR)
 			{
-				printf("\n Connection accepted from %lx, port %d \n", addr.sin_addr, addr.sin_port);
-
 				task_id = _task_create(0, TCPSERVER_TASK, sock);
 				if (task_id != MQX_NULL_TASK_ID)
 				{
@@ -142,13 +140,23 @@ void taskinit_task (uint_32 initial_data)
 void tcpserver_task(uint_32 initial_data)
 {
 	char  data_buffer[1500];
-  uint_32 count, handle;
+  uint_32 count, error;
 	while(TRUE)
 	{
 		count = recv(initial_data, data_buffer, 1500, 0);
 		if (count == RTCS_ERROR)
 		{
-		  printf("\n Error, recv() failed with error code %lx \n",RTCS_geterror(handle));
+			error = RTCS_geterror(initial_data);
+		  if(error == RTCS_OK)
+		  {
+		  	_task_destroy(MQX_NULL_TASK_ID);
+		  	shutdown(initial_data, FLAG_CLOSE_TX);
+		  }
+		  else
+		  {
+		  	_task_destroy(MQX_NULL_TASK_ID);
+		  	shutdown(initial_data, FLAG_CLOSE_TX);
+		  }
 		}
 	  send(initial_data, data_buffer, count, 0);
 	}
