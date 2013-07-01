@@ -37,7 +37,7 @@ const TASK_TEMPLATE_STRUCT  MQX_template_list[] =
 *END*-----------------------------------------------------*/
 void taskinit_task (uint_32 initial_data)
 {	
-		uint_32          listensock, error, option;
+		uint_32          listensock, error;
 		sockaddr         addr;
 		_task_id 				 task_id;
 		
@@ -51,7 +51,7 @@ void taskinit_task (uint_32 initial_data)
         _task_block();
     }
     
-		ip_data.ip      = IPADDR(192, 168, 0, 99);
+		ip_data.ip      = IPADDR(192, 168, 0, 66);
     ip_data.mask    = IPADDR(255, 255, 255, 0);
     ip_data.gateway = IPADDR(192, 168, 0, 1);
 
@@ -76,14 +76,6 @@ void taskinit_task (uint_32 initial_data)
 		if(listensock == RTCS_SOCKET_ERROR)
 		{
 				printf("\n Socket initialize failure \n");
-				_task_block();
-		}
-
-    option = FALSE;   
-    error = setsockopt(listensock, SOL_UDP, OPT_RECEIVE_NOWAIT, &option, sizeof(uint_32));
-		if(error != RTCS_OK)
-		{
-				printf("\n Set socket failure \n");
 				_task_block();
 		}
 		
@@ -123,7 +115,7 @@ void udpserver_task(uint_32 initial_data)
   uint_16      remote_len = sizeof(sockaddr);
 	((sockaddr_in*)(&addr))->sin_family         = PF_INET;
 	((sockaddr_in*)(&addr))->sin_port           = 4001;
-	((sockaddr_in*)(&addr))->sin_addr.s_addr    = IPADDR(192, 168, 0, 104);
+	((sockaddr_in*)(&addr))->sin_addr.s_addr    = IPADDR(192, 168, 0, 77);
 	while(TRUE)
 	{
 		count = recvfrom(initial_data, data_buffer, 1500, 0, &addr, &remote_len);

@@ -41,7 +41,7 @@ const TASK_TEMPLATE_STRUCT  MQX_template_list[] =
 *END*-----------------------------------------------------*/
 void taskinit_task (uint_32 initial_data)
 {	
-		uint_32          listensock, error, option;
+		uint_32          listensock, error;
 		sockaddr         addr;
 		ip_mreq 				 mreq;
 		_task_id 				 task_id;
@@ -56,7 +56,7 @@ void taskinit_task (uint_32 initial_data)
         _task_block();
     }
     
-		ip_data.ip      = IPADDR(192, 168, 0, 99);
+		ip_data.ip      = IPADDR(192, 168, 0, 66);
     ip_data.mask    = IPADDR(255, 255, 255, 0);
     ip_data.gateway = IPADDR(192, 168, 0, 1);
 
@@ -88,29 +88,29 @@ void taskinit_task (uint_32 initial_data)
 		addr.sin_port           = PUERTO;
 		inet_aton(GRUPO, &(addr.sin_addr));
 		error = bind(listensock, &addr, sizeof(sockaddr));
-   	if(error == RTCS_OK)
+		if(error != RTCS_OK)
 		{
-			task_id = _task_create(0, UDPSERVER_TASK, listensock);
-			if (task_id != MQX_NULL_TASK_ID)
-			{
-				printf("\n Socket task create success \n");
-			}
-	  }
-	  else
-	  {
-	  	printf("\n Bind socket failure \n");
-	  	shutdown (listensock, FLAG_CLOSE_TX);
-	  	_task_block();
-	  }
+			printf("\n Bind socket failure \n");
+			_task_block();
+		}
 	  inet_aton(GRUPO, &(mreq.imr_multiaddr));
-	  inet_aton("192.168.0.99", &(mreq.imr_interface));
+	  inet_aton("192.168.0.66", &(mreq.imr_interface));
 	   
     error = setsockopt(listensock, SOL_IGMP, RTCS_SO_IGMP_ADD_MEMBERSHIP, &mreq, sizeof(ip_mreq));
 		if(error != RTCS_OK)
 		{
-				printf("\n Set socket option failure \n");
-				_task_block();
+			printf("\n Set socket option failure \n");
+			_task_block();
+		}   	
+		else
+		{
+				task_id = _task_create(0, UDPSERVER_TASK, listensock);
+				if (task_id != MQX_NULL_TASK_ID)
+				{
+					printf("\n Socket task create success \n");
+				}
 		}
+		_task_block();
 }
 
 
@@ -123,7 +123,7 @@ void taskinit_task (uint_32 initial_data)
 *END*-----------------------------------------------------*/
 void udpserver_task(uint_32 initial_data)
 {
-	char  data_buffer[1500];
+	char  data_buffer[1500]={"how are you !"};
   uint_32 count, handle;
   sockaddr         addr;
   uint_16      remote_len = sizeof(sockaddr);
@@ -132,11 +132,16 @@ void udpserver_task(uint_32 initial_data)
 		inet_aton(GRUPO, &(addr.sin_addr));
 	while(TRUE)
 	{
-		count = recvfrom(initial_data, data_buffer, 1500, 0, &addr, &remote_len);
-		if (count == RTCS_ERROR)
-		{
-		  printf("\n Error, recv() failed with error code %lx \n",RTCS_geterror(handle));
-		}
-	  sendto(initial_data, data_buffer, count, 0, &addr, sizeof(sockaddr));
+//		count = recvfrom(initial_data, data_buffer, 1500, 0, &addr, &remote_len);
+//		if (count == RTCS_ERROR)
+//		{
+//		  printf("\n Error, recv() failed with error code %lx \n",RTCS_geterror(handle));
+//		}
+//		else
+//		{
+//	  	sendto(initial_data, data_buffer, count, 0, &addr, sizeof(sockaddr));
+//		}
+		sendto(initial_data, data_buffer, 10, 0, &addr, sizeof(sockaddr));
+		_time_delay(1000);
 	}
 }

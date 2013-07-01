@@ -25,7 +25,7 @@ extern void tcpserver_task(uint_32);
 const TASK_TEMPLATE_STRUCT  MQX_template_list[] = 
 { 
 		/* Task Index,   			Function,   			Stack,  Priority, 	Name,     						Attributes,          	Param, Time Slice */
-    { TASKINIT_TASK,   		taskinit_task, 		1500,   9,      		"init tasks",  				MQX_AUTO_START_TASK|MQX_TIME_SLICE_TASK, 	0,     10 },
+    { TASKINIT_TASK,   		taskinit_task, 		1500,   9,      		"init tasks",  				MQX_AUTO_START_TASK, 	0,     0 },
     { TCPSERVER_TASK,   	tcpserver_task,  	3000,   10,        	"tcpserver task",  		0, 										0,     0 },	
     { 0 }
 };
