@@ -40,7 +40,7 @@
 *END************************************************************************/
 
 
-#if 0
+#if 1
 #  define IGMP_V2      /* to define if the host has to support IGMPv2 */
 #endif
 

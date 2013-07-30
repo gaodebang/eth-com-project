@@ -159,7 +159,7 @@ extern uchar __DEFAULT_INTERRUPT_STACK_SIZE[];
 ** MGCT: <option type="number" min="1" max="1000"/>
 */
 #ifndef BSP_ALARM_FREQUENCY
-    #define BSP_ALARM_FREQUENCY             (200)
+    #define BSP_ALARM_FREQUENCY             (1000)
 #endif
 
 /** MGCT: </category> */
@@ -590,7 +590,7 @@ extern uchar __DEFAULT_INTERRUPT_STACK_SIZE[];
 ** MGCT: <option type="number" min="0" max="256"/>
 */
 #ifndef BSPCFG_SCI3_QUEUE_SIZE
-    #define BSPCFG_SCI3_QUEUE_SIZE             64
+    #define BSPCFG_SCI3_QUEUE_SIZE             256
 #endif
 
 /** MGCT: </category> */
@@ -961,7 +961,7 @@ extern uchar __USER_NO_MEMORY_END[];
  */
 #ifndef BSP_DEFAULT_IO_CHANNEL
     #if BSPCFG_ENABLE_TTYD
-        #define BSP_DEFAULT_IO_CHANNEL                    "ttyd:"    /* OSJTAG-COM   polled mode   */
+        #define BSP_DEFAULT_IO_CHANNEL                    "ittyd:"    /* OSJTAG-COM   polled mode   */
         #define BSP_DEFAULT_IO_CHANNEL_DEFINED
     #else
         #define BSP_DEFAULT_IO_CHANNEL                      NULL

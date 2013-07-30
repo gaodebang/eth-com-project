@@ -1,0 +1,8 @@
+#include "mqx_eth_com_main.h"
+
+extern uint_32 Udp_Connect_Sock[];
+
+extern void udp_connect_task0(uint_32 initial_data);
+extern void udp_connect_task1(uint_32 initial_data);
+extern void udp_connect_task2(uint_32 initial_data);
+extern void udp_connect_task3(uint_32 initial_data);

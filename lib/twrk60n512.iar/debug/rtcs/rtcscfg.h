@@ -105,7 +105,7 @@
 */
 #ifndef RTCSCFG_ENABLE_IGMP
     #if RTCS_MINIMUM_FOOTPRINT
-        #define RTCSCFG_ENABLE_IGMP 1
+        #define RTCSCFG_ENABLE_IGMP 0
     #else
         #define RTCSCFG_ENABLE_IGMP 1
     #endif
@@ -355,7 +355,7 @@
 ** MGCT: <option type="number"/>
 */
 #ifndef RTCSCFG_PCBS_GROW
-   #define RTCSCFG_PCBS_GROW 2 
+   #define RTCSCFG_PCBS_GROW 2
 #endif
 
 /*
@@ -448,7 +448,7 @@
 */
 #ifndef RTCSCFG_MSGPOOL_GROW
    #if RTCS_MINIMUM_FOOTPRINT
-      #define RTCSCFG_MSGPOOL_GROW 2 
+      #define RTCSCFG_MSGPOOL_GROW 2
    #else
       #define RTCSCFG_MSGPOOL_GROW 16
    #endif
@@ -904,7 +904,7 @@
 */
 #ifndef RTCSCFG_STACK_SIZE
    #if RTCS_MINIMUM_FOOTPRINT
-      #define RTCSCFG_STACK_SIZE (1500*sizeof(uint_32)) 
+      #define RTCSCFG_STACK_SIZE (1000*sizeof(uint_32)) 
    #else
       #define RTCSCFG_STACK_SIZE (2000*sizeof(uint_32))
    #endif

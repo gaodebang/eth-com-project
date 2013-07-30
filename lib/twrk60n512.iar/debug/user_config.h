@@ -45,8 +45,8 @@
 #define BSPCFG_ENABLE_ITTYB      0
 #define BSPCFG_ENABLE_TTYC       0
 #define BSPCFG_ENABLE_ITTYC      0
-#define BSPCFG_ENABLE_TTYD       1
-#define BSPCFG_ENABLE_ITTYD      0
+#define BSPCFG_ENABLE_TTYD       0
+#define BSPCFG_ENABLE_ITTYD      1
 #define BSPCFG_ENABLE_TTYE       0
 #define BSPCFG_ENABLE_ITTYE      0
 #define BSPCFG_ENABLE_TTYF       0

@@ -109,20 +109,21 @@ void taskinit_task (uint_32 initial_data)
 *END*-----------------------------------------------------*/
 void udpserver_task(uint_32 initial_data)
 {
-	char  data_buffer[1500];
+	char  data_buffer[1500]={"fine"};
   uint_32 count, handle;
   sockaddr         addr;
   uint_16      remote_len = sizeof(sockaddr);
 	((sockaddr_in*)(&addr))->sin_family         = PF_INET;
-	((sockaddr_in*)(&addr))->sin_port           = 4001;
-	((sockaddr_in*)(&addr))->sin_addr.s_addr    = IPADDR(192, 168, 0, 77);
+	((sockaddr_in*)(&addr))->sin_port           = 5000;
+	((sockaddr_in*)(&addr))->sin_addr.s_addr    = IPADDR(239, 0, 0, 1);
 	while(TRUE)
 	{
-		count = recvfrom(initial_data, data_buffer, 1500, 0, &addr, &remote_len);
-		if (count == RTCS_ERROR)
-		{
-		  printf("\n Error, recv() failed with error code %lx \n",RTCS_geterror(handle));
-		}
-	  sendto(initial_data, data_buffer, count, 0, &addr, sizeof(sockaddr));
+//		count = recvfrom(initial_data, data_buffer, 1500, 0, &addr, &remote_len);
+//		if (count == RTCS_ERROR)
+//		{
+//		  printf("\n Error, recv() failed with error code %lx \n",RTCS_geterror(handle));
+//		}
+	  sendto(initial_data, data_buffer, 4, 0, &addr, sizeof(sockaddr));
+	  _time_delay(500);
 	}
 }
