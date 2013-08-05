@@ -5,7 +5,7 @@ uint_32 Udp_Connect_Sock[4] = {0, 0, 0, 0};
 
 void udp_connect_task0(uint_32 initial_data)
 {
-	char  data_buffer[1500];
+	char  data_buffer[4096];
     uint_32 count, error;
     sockaddr         addr;
     uint_16      remote_len = sizeof(sockaddr);
@@ -13,7 +13,7 @@ void udp_connect_task0(uint_32 initial_data)
 
 	while(TRUE)
 	{
-        count = recvfrom(initial_data, data_buffer, 1500, 0, &addr, &remote_len);
+        count = recvfrom(initial_data, data_buffer, 4096, 0, &addr, &remote_len);
         if (count == RTCS_ERROR)
         {
             error = RTCS_geterror(initial_data);
@@ -34,13 +34,13 @@ void udp_connect_task0(uint_32 initial_data)
             write(SCI3, data_buffer, count);
             fflush(SCI3);
         }
-        _time_delay(200);
+        _time_delay (200);
 	}
 }
 
 void udp_connect_task1(uint_32 initial_data)
 {
-	char  data_buffer[1500];
+	char  data_buffer[4096];
     uint_32 count, error;
     sockaddr         addr;
     uint_16      remote_len = sizeof(sockaddr);
@@ -48,7 +48,7 @@ void udp_connect_task1(uint_32 initial_data)
 
 	while(TRUE)
 	{
-        count = recvfrom(initial_data, data_buffer, 1500, 0, &addr, &remote_len);
+        count = recvfrom(initial_data, data_buffer, 4096, 0, &addr, &remote_len);
         if (count == RTCS_ERROR)
         {
             error = RTCS_geterror(initial_data);
@@ -69,12 +69,13 @@ void udp_connect_task1(uint_32 initial_data)
             write(SCI3, data_buffer, count);
             fflush(SCI3);
         }
-        _time_delay(200);
+        _time_delay (200);
 	}
 }
+
 void udp_connect_task2(uint_32 initial_data)
 {
-	char  data_buffer[1500];
+	char  data_buffer[4096];
     uint_32 count, error;
     sockaddr         addr;
     uint_16      remote_len = sizeof(sockaddr);
@@ -82,7 +83,7 @@ void udp_connect_task2(uint_32 initial_data)
 
 	while(TRUE)
 	{
-        count = recvfrom(initial_data, data_buffer, 1500, 0, &addr, &remote_len);
+        count = recvfrom(initial_data, data_buffer, 4096, 0, &addr, &remote_len);
         if (count == RTCS_ERROR)
         {
             error = RTCS_geterror(initial_data);
@@ -103,13 +104,13 @@ void udp_connect_task2(uint_32 initial_data)
             write(SCI3, data_buffer, count);
             fflush(SCI3);
         }
-        _time_delay(200);
+        _time_delay (200);
 	}
 }
 
 void udp_connect_task3(uint_32 initial_data)
 {
-	char  data_buffer[1500];
+	char  data_buffer[4096];
     uint_32 count, error;
     sockaddr         addr;
     uint_16      remote_len = sizeof(sockaddr);
@@ -117,7 +118,7 @@ void udp_connect_task3(uint_32 initial_data)
 
 	while(TRUE)
 	{
-        count = recvfrom(initial_data, data_buffer, 1500, 0, &addr, &remote_len);
+        count = recvfrom(initial_data, data_buffer, 4096, 0, &addr, &remote_len);
         if (count == RTCS_ERROR)
         {
             error = RTCS_geterror(initial_data);
@@ -138,6 +139,6 @@ void udp_connect_task3(uint_32 initial_data)
             write(SCI3, data_buffer, count);
             fflush(SCI3);
         }
-        _time_delay(200);
+        _time_delay (200);
 	}
 }

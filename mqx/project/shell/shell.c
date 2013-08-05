@@ -42,5 +42,8 @@ int_32 atexit(int_32 argc, char_ptr argv[])
 }
 void task_shell(uint_32 p)
 {
-    Shell(Shell_commands, NULL);
+    for (;;)
+    {
+        Shell(Shell_commands, NULL);
+    }
 }

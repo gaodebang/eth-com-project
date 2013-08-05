@@ -1,14 +1,14 @@
 #include "shell_at.h"
-#include "shell.h"
+#include "config_parameter.h"
 
-const SHELL_COMMAND_STRUCT Shell_commands[]=
-{
-    { NULL, NULL }
-};
 void shell_server_task(uint_32 initial_data)
 {
-    for (;;)
+    uint_8 data_buffer[1]={0x33};
+    while(TRUE)
     {
-        //Shell(Shell_commands, NULL);
+        write(SCI3, data_buffer, 1);
+        fflush(SCI3);
+        _time_delay(200);
+        _task_block();
     }
 }

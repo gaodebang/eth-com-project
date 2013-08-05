@@ -6,12 +6,12 @@ uint_8 Socket_Num;
 
 void tcp_server_task(uint_32 initial_data)
 {
-	char data_buffer[1500];
+	char data_buffer[4096];
     uint_32 count, error;
 
 	while(TRUE)
 	{
-		count = recv(initial_data, data_buffer, 1500, 0);
+		count = recv(initial_data, data_buffer, 4096, 0);
 		if (count == RTCS_ERROR)
 		{
 			error = RTCS_geterror(initial_data);
@@ -19,11 +19,13 @@ void tcp_server_task(uint_32 initial_data)
 		    {
 		  	    shutdown(initial_data, FLAG_CLOSE_TX);
 		  	    _task_destroy(MQX_NULL_TASK_ID);
+		  	    if(Socket_Num--);
 		    }
 		    else
 		    {
 		  	    shutdown(initial_data, FLAG_CLOSE_TX);
 		  	    _task_destroy(MQX_NULL_TASK_ID);
+		  	    if(Socket_Num--);
 		    }
 		}
 		else
@@ -31,6 +33,6 @@ void tcp_server_task(uint_32 initial_data)
             write(SCI3, data_buffer, count);
             fflush(SCI3);
         }
-        _time_delay (100);
+        _time_delay (200);
 	}
 }

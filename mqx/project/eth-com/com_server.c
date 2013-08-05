@@ -6,12 +6,12 @@
 
 void com_server_task_tcp_server(uint_32 initial_data)
 {
-    char data_buffer[256]; 
+    char data_buffer[4096]; 
     uint_32 count, count0, error;
     uint_8 i;
 	while(TRUE)
     {
-        count = fread(data_buffer, 1, 256, SCI3); 
+        count = fread(data_buffer, 1, 4096, SCI3); 
         for (i=0; i<4; i++)
         {
             if (Tcp_Server_Sock[i] != 0)
@@ -22,21 +22,22 @@ void com_server_task_tcp_server(uint_32 initial_data)
                     error = RTCS_geterror(initial_data);
                     shutdown(initial_data, FLAG_CLOSE_TX);
                     Tcp_Server_Sock[i] = 0;
+                    if(Socket_Num--);
                 }
             }
         }
-        _time_delay (100);
+        _time_delay (200);
     }
 }
 
 void com_server_task_tcp_client(uint_32 initial_data)
 {
-    char data_buffer[256]; 
+    char data_buffer[4096]; 
     uint_8 i;
     uint_32 count, count0, error;
 	while(TRUE)
     {
-        count = fread(data_buffer, 1, 256, SCI3); 
+        count = fread(data_buffer, 1, 4096, SCI3); 
         for (i=0; i<4; i++)
         {
             if (Tcp_Client_Sock[i] != 0)
@@ -51,19 +52,19 @@ void com_server_task_tcp_client(uint_32 initial_data)
                 }
             }
         }
-        _time_delay (100);
+        _time_delay (200);
     }
 }
 
 void com_server_task_udp_connect(uint_32 initial_data)
 {
-    char data_buffer[256]; 
+    char data_buffer[4096]; 
     uint_8 i;
     uint_32 count, count0, error;
     sockaddr         addr;
 	while(TRUE)
     {
-        count = fread(data_buffer, 1, 256, SCI3);
+        count = fread(data_buffer, 1, 4096, SCI3);
         for (i=0; i<4; i++)
         {
             if (Udp_Connect_Sock[i] != 0)
@@ -78,6 +79,6 @@ void com_server_task_udp_connect(uint_32 initial_data)
                 }
             }
         }
-        _time_delay (100);
+        _time_delay (200);
     }
 }

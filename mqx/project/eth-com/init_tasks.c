@@ -6,6 +6,8 @@
 #include "tcp_client.h"
 #include "udp_connect.h"
 #include "gpio_with_config.h"
+#include "shell_at.h"
+#include "com_push.h"
 
 static void get_mac_address(_enet_address intent, _enet_address source)
 {
@@ -62,6 +64,13 @@ static void tcp_server_start(void)
         _task_block();
     }
 
+    option = TRUE;
+    error = setsockopt(listensock, SOL_TCP, OPT_RECEIVE_NOWAIT, &option, sizeof(uint_32));
+    if (error != RTCS_OK) 
+    {
+        _task_block();
+    }
+
     addr = Enet_Device.G_Addr_TCP_SERVER;
     error = bind(listensock, &addr, sizeof(sockaddr));
     if (error != RTCS_OK) 
@@ -86,6 +95,7 @@ static void tcp_server_start(void)
         	    if (task_id != MQX_NULL_TASK_ID)
         	    {
         	        Tcp_Server_Sock[Socket_Num]= sock;
+        	        Socket_Num++;
         	    }
             }
             else
@@ -121,6 +131,13 @@ static void tcp_client_start(void)
                 
                 option = FALSE;
                 error = setsockopt(listensock, SOL_TCP, OPT_SEND_NOWAIT, &option, sizeof(uint_32));
+                if (error != RTCS_OK) 
+                {
+                    _task_block();
+                }
+            
+                option = TRUE;
+                error = setsockopt(listensock, SOL_TCP, OPT_RECEIVE_NOWAIT, &option, sizeof(uint_32));
                 if (error != RTCS_OK) 
                 {
                     _task_block();
@@ -163,8 +180,16 @@ static void udp_connect_start(void)
     {
         _task_block();
     }
+    
     option = FALSE;
-    error = setsockopt(listensock, SOL_TCP, OPT_SEND_NOWAIT, &option, sizeof(uint_32));
+    error = setsockopt(listensock, SOL_UDP, OPT_SEND_NOWAIT, &option, sizeof(uint_32));
+    if (error != RTCS_OK) 
+    {
+        _task_block();
+    }
+
+    option = TRUE;
+    error = setsockopt(listensock, SOL_UDP, OPT_RECEIVE_NOWAIT, &option, sizeof(uint_32));
     if (error != RTCS_OK) 
     {
         _task_block();
@@ -185,20 +210,32 @@ static void udp_connect_start(void)
     _task_block();
 }
 
+static void at_server_start(void)
+{
+    
+}
+
 void init_tasks_task(uint_32 initial_data)
 {
     uint_8 enet_mode;
     _task_id task_id;
-    
+
     task_id = _task_create(0, GPIO_SERVER_TASK, 0);
     if (task_id == MQX_NULL_TASK_ID)
     {
         _task_block();
     }
     
+    task_id = _task_create(0, SHELL_SERVER_TASK, 0);
+    if (task_id == MQX_NULL_TASK_ID)
+    {
+        _task_block();
+    }
+    
+    SCI3 = fopen("ittyd:", (char const *)IO_SERIAL_NON_BLOCKING);
+
     init_rtcs();
     enet_mode = Enet_Device.G_Enet_Mode;
-    SCI3 = fopen("ittyd:", (char const *)IO_SERIAL_NON_BLOCKING);
     if (enet_mode == 0)
     {
         task_id = _task_create(0, COM_SERVER_TASK_TCP_SERVER, 0);
@@ -226,8 +263,11 @@ void init_tasks_task(uint_32 initial_data)
         }
         udp_connect_start();
     }
-    else
+    else if (enet_mode == 3)
     {
+        at_server_start();
     }
+    else
+    {}
     _task_block();
 }

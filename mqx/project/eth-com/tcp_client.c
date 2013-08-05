@@ -6,11 +6,12 @@ uint_8 Tcp_Connect_Mark[4] = {0, 0, 0, 0};
 
 void tcp_client_task0(uint_32 initial_data)
 {
-	char data_buffer[1500];
+	char data_buffer[4096];
     uint_32 count, error;
+
 	while(TRUE)
 	{
-		count = recv(initial_data, data_buffer, 1500, 0);
+		count = recv(initial_data, data_buffer, 4096, 0);
 		if (count == RTCS_ERROR)
 		{
 			error = RTCS_geterror(initial_data);
@@ -33,16 +34,18 @@ void tcp_client_task0(uint_32 initial_data)
             write(SCI3, data_buffer, count);
             fflush(SCI3);
         }
+        _time_delay (200);
 	}
 }
 
 void tcp_client_task1(uint_32 initial_data)
 {
-	char data_buffer[1500];
+	char data_buffer[4096];
     uint_32 count, error;
+
 	while(TRUE)
 	{
-		count = recv(initial_data, data_buffer, 1500, 0);
+		count = recv(initial_data, data_buffer, 4096, 0);
 		if (count == RTCS_ERROR)
 		{
 			error = RTCS_geterror(initial_data);
@@ -65,16 +68,18 @@ void tcp_client_task1(uint_32 initial_data)
             write(SCI3, data_buffer, count);
             fflush(SCI3);
         }
+        _time_delay (200);
 	}
 }
 
 void tcp_client_task2(uint_32 initial_data)
 {
-	char data_buffer[1500];
+	char data_buffer[4096];
     uint_32 count, error;
+
 	while(TRUE)
 	{
-		count = recv(initial_data, data_buffer, 1500, 0);
+		count = recv(initial_data, data_buffer, 4096, 0);
 		if (count == RTCS_ERROR)
 		{
 			error = RTCS_geterror(initial_data);
@@ -97,16 +102,18 @@ void tcp_client_task2(uint_32 initial_data)
             write(SCI3, data_buffer, count);
             fflush(SCI3);
         }
+        _time_delay (200);
 	}
 }
 
 void tcp_client_task3(uint_32 initial_data)
 {
-	char data_buffer[1500];
+	char data_buffer[4096];
     uint_32 count, error;
+
 	while(TRUE)
 	{
-		count = recv(initial_data, data_buffer, 1500, 0);
+		count = recv(initial_data, data_buffer, 4096, 0);
 		if (count == RTCS_ERROR)
 		{
 			error = RTCS_geterror(initial_data);
@@ -129,5 +136,6 @@ void tcp_client_task3(uint_32 initial_data)
             write(SCI3, data_buffer, count);
             fflush(SCI3);
         }
+        _time_delay (200);
 	}
 }

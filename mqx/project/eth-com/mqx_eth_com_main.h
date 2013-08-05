@@ -25,3 +25,5 @@
 #define GPIO_SERVER_TASK                18
 
 #define SHELL_SERVER_TASK               19
+
+#define COM_BUFFER_PUSH                 20

@@ -25,7 +25,7 @@ void Init_Default_Parameter(void)
     Enet_Device.G_Ip_Data.mask    = IPADDR(255, 255, 255, 0);
     Enet_Device.G_Ip_Data.gateway = IPADDR(192, 168, 0, 1);
     
-    Enet_Device.G_Enet_Mode = 2;
+    Enet_Device.G_Enet_Mode = 0;
     
     Enet_Device.G_Addr_TCP_SERVER.sin_family       = PF_INET;
     Enet_Device.G_Addr_TCP_SERVER.sin_port         = 4001;
