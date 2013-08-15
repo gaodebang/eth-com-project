@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>2</fileVersion>
+  <fileChecksum>1838828397</fileChecksum>
+  <configuration>
+    <name>Int Flash Debug</name>
+    <outputs>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\bsp.a</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\psp.a</file>
+      <file>$PROJ_DIR$\..\..\shell.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\rtcs\rtcs.a</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\shell\shell.a</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\spi_dspi.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\rtcs\rtcsrtos.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\serl_kuart.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\io.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\pcb.h</file>
+      <file>$PROJ_DIR$\twrk60n512\Int Flash Debug\Obj\shell.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\io_rev.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\sdcard.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\io_mem.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\pcflash.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\i2c_ki2c.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\enet.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\tchres.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\psp_supp.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\hmi_tss_provider.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\lwsem.h</file>
+      <file>$TOOLKIT_DIR$\lib\rt7M_tl.a</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
+      <file>$TOOLKIT_DIR$\lib\shb_l.a</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\nvic.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\mqx_ioc.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\queue.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\i2c.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\timer_qpit.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\MK60DZ10.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\kinetis.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\mqx_macros.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\hmi_provider.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\string.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\psp_time.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\psp_cpu.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\lpm.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\lwmem.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\rtcs\rtcs_in.h</file>
+      <file>$PROJ_DIR$\twrk60n512\Int Flash Debug\Obj\app.o</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\bsp.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\rtcs\rtcsvers.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\rtcs\rtcs25x.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\rtcs\rtcs.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\usb_bsp.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\hmi_client.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\hmi_uids.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\qpit.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\btnled.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\lpm_kinetis.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\apccard.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\lwgpio.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\sdcard_spi.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\fio.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\spi.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\if_host_ehci.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\ioctl.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\if_dev_khci.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\esdhc.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\if_host_khci.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\psp_cpudef.h</file>
+      <file>$TOOLKIT_DIR$\lib\m7M_tl.a</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\rtcs\rtcslog.h</file>
+      <file>$PROJ_DIR$\twrk60n512\Int Flash Debug\List\twrk60n512.map</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\rtcs\dhcp.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\klog.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl7M_tln.a</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\rtcs\rtcscfg.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\log.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\intflash.icf</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\mqx.h</file>
+      <file>$PROJ_DIR$\twrk60n512\Int Flash Debug\Obj\tcp-server.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\verif_enabled_config.h</file>
+      <file>$PROJ_DIR$\twrk60n512\Int Flash Debug\Obj\udp-group.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
+      <file>$PROJ_DIR$\twrk60n512\Int Flash Debug\Obj\udp-group.pbi</file>
+      <file>$PROJ_DIR$\..\..\tcp-server.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\if_dev_ehci.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\comp.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\partition.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\message.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\lwevent.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\adc_kadc.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\i2s_ki2s.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\timer_lpt.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\adc.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\i2s_audio.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\iodebug.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\flash_mk60.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\psp_math.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\cm_kinetis.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\init_lpm.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\bsp_cm.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\rtc.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\bsp_rev.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\twrk60n512.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\pccardflexbus.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\i2s.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\serial.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\krtc.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\macnet_mk60.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\io_null.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\sdcard_esdhc.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\ethernet.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\psp.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\user_config.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\cm.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\Generated_Code\PE_LDD.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\small_ram_config.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\cortex.h</file>
+      <file>$PROJ_DIR$\..\..\udp-group.c</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\kinetis_mpu.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\psptypes.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\mqx_cnfg.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\psp_comp.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\mqx_cpudef.h</file>
+      <file>$PROJ_DIR$\..\..\app.c</file>
+      <file>$PROJ_DIR$\twrk60n512\Int Flash Debug\Obj\app.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\flashx.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\rtcs\ipcfg.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\adc_mk60.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\mqx.h</file>
+      <file>$PROJ_DIR$\twrk60n512\Int Flash Debug\Exe\twrk60n512.out</file>
+      <file>$PROJ_DIR$\twrk60n512\Int Flash Debug\Exe\twrk60n512.srec</file>
+      <file>$PROJ_DIR$\twrk60n512\Int Flash Debug\Obj\twrk60n512.pbd</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\psp\kinetis_fcan.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\kflexcan.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\flash_ftfl.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\shell\shell.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\hmi_lwgpio_provider.h</file>
+      <file>$PROJ_DIR$\twrk60n512\Int Flash Debug\Obj\shell.o</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\io_gpio.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\io_gpio_kgpio.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\lib\twrk60n512.iar\debug\bsp\lwgpio_kgpio.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdarg.h</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\..\..\shell.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 139</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 10</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 130 121 110 113 77 120 122 65 123 83 79 127 19 28 34 29 23 39 33 32 114 22 20 117 12 119 25 27 118 115 36 38 45 41 137 58 143 8 11 61</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 130 121 110 113 77 120 122 65 123 83 79 127 19 28 34 29 23 39 33 32 114 22 20 117 12 119 25 27 118 115 36 38 45 41 137 58 143 8 11 61</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 68 131</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\tcp-server.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 76</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 130 121 110 113 77 120 122 65 123 83 79 127 19 28 34 29 23 39 33 32 114 22 20 117 12 119 25 27 118 115 36 38 45 41 44 109 37 94 112 99 100 95 97 111 96 54 40 58 143 8 11 61 103 7 59 5 30 16 14 106 17 9 108 105 142 56 140 141 63 13 57 107 55 101 15 129 90 86 87 134 135 126 136 93 104 98 102 88 91 92 18 89 31 52 51 53 75 50 35 138 21 49 64 60 62 82 48 46 6 47 85 84 73 70 72 67 42 69 128</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\udp-group.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 78</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 80</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\app.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 43</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 125</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 130 121 110 113 77 120 122 65 123 83 79 127 19 28 34 29 23 39 33 32 114 22 20 117 12 119 25 27 118 115 36 38 45 41 137 58 143 8 11 61</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 130 121 110 113 77 120 122 65 123 83 79 127 19 28 34 29 23 39 33 32 114 22 20 117 12 119 25 27 118 115 36 38 45 41 137 58 143 8 11 61</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\twrk60n512\Int Flash Debug\Exe\twrk60n512.out</name>
+      <outputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 68</file>
+        </tool>
+        <tool>
+          <name>OBJCOPY</name>
+          <file> 132</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 74 0 1 3 4 139 26 24 66 71</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>Int Flash Release</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>ILINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>Int Ram Debug</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>ILINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>Int Ram Release</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>ILINK</tool>
+    </forcedrebuild>
+  </configuration>
+</project>
+
+

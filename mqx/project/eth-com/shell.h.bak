@@ -1,0 +1,3 @@
+#include "mqx_main.h"
+
+extern void shell_server_task(uint_32 initial_data);

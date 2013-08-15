@@ -4,8 +4,6 @@
 #include "ipcfg.h"
 #include "fio.h"
 
-
-
 #define	INIT_TASKS_TASK                 5
 
 #define TCP_SERVER_TASK                 6

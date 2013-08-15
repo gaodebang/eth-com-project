@@ -1,0 +1,5 @@
+#include "ipcfg.h"
+
+
+
+IPCFG_IP_ADDRESS_DATA ip_data;

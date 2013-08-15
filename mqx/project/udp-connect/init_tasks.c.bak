@@ -1,0 +1,13 @@
+#include "mqx.h"
+#include "bsp.h"
+#include "bsp.h"
+
+void init_rtcs(uint_32 initial_data)
+{
+    
+}
+
+void init_tasks_task(uint_32 initial_data)
+{
+    
+}

@@ -1,0 +1,6 @@
+#include "mqx_main.h"
+
+extern uint_32 Tcp_Server_Sock[4];
+extern uint_8 Socket_Num;
+
+extern void tcp_server_task(uint_32 initial_data);

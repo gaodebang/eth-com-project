@@ -1,0 +1,4 @@
+#include "mqx_eth_com_main.h"
+
+exterm void write_com_buffer(uint_32 initial_data, uint_8 * datain, uint_32 num);
+extern void com_buffer_push(uint_32 initial_data);

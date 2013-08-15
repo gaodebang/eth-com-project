@@ -1,0 +1,9 @@
+#include "ipcfg.h"
+
+#ifdef   INIT_GLOBALS
+#define  INIT_EXT
+#else
+#define  INIT_EXT extern
+#endif
+
+INIT_EXT IPCFG_IP_ADDRESS_DATA g_d_ip_data;

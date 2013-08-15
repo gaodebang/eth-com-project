@@ -1,8 +1,9 @@
 #include "config_parameter.h"
+#include "flash.h"
 
 ENET_PARAMETER Enet_Device;
 
-MQX_FILE_PTR SCI3;
+MQX_FILE_PTR SCI0;
 
 static void get_mac_address(void)
 {
@@ -13,19 +14,32 @@ static void get_mac_address(void)
    Enet_Device.G_Mac_Address[4] = 0x55;
    Enet_Device.G_Mac_Address[5] = 0xAA;    
 }
+/*
+static void get_enet_parameter(void)
+{
+    uint_8 flash_data[16],temp_data[]={192,168,0,99,
+                                       255,255,255,0,
+                                       192,168,0,1,
+                                       15,161,
+                                       0,
+                                       0};
+    Flash_Write(16,3,(char_ptr)temp_data,16);
+    Flash_Read(16,3,(char_ptr)flash_data,16);
 
-
+}
+*/
 
 void Init_Default_Parameter(void)
 {
     uint_8 i;
     get_mac_address();
-    
+
     Enet_Device.G_Ip_Data.ip      = IPADDR(192, 168, 0, 99);
     Enet_Device.G_Ip_Data.mask    = IPADDR(255, 255, 255, 0);
     Enet_Device.G_Ip_Data.gateway = IPADDR(192, 168, 0, 1);
     
-    Enet_Device.G_Enet_Mode = 0;
+
+    Enet_Device.G_Enet_Mode = 3;
     
     Enet_Device.G_Addr_TCP_SERVER.sin_family       = PF_INET;
     Enet_Device.G_Addr_TCP_SERVER.sin_port         = 4001;
@@ -48,5 +62,4 @@ void Init_Default_Parameter(void)
         Enet_Device.G_Addr_UDP_REMOTE[i].sin_addr.s_addr  = IPADDR(192, 168, 0, 77);
     }
     Enet_Device.MAX_SOCKET_NUM = 4;
-    
 }

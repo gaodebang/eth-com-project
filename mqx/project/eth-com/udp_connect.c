@@ -31,8 +31,8 @@ void udp_connect_task0(uint_32 initial_data)
         }
         else
         {
-            write(SCI3, data_buffer, count);
-            fflush(SCI3);
+            write(SCI0, data_buffer, count);
+            fflush(SCI0);
         }
         _time_delay (200);
 	}
@@ -66,8 +66,8 @@ void udp_connect_task1(uint_32 initial_data)
         }
         else
         {
-            write(SCI3, data_buffer, count);
-            fflush(SCI3);
+            write(SCI0, data_buffer, count);
+            fflush(SCI0);
         }
         _time_delay (200);
 	}
@@ -101,8 +101,8 @@ void udp_connect_task2(uint_32 initial_data)
         }
         else
         {
-            write(SCI3, data_buffer, count);
-            fflush(SCI3);
+            write(SCI0, data_buffer, count);
+            fflush(SCI0);
         }
         _time_delay (200);
 	}
@@ -136,8 +136,8 @@ void udp_connect_task3(uint_32 initial_data)
         }
         else
         {
-            write(SCI3, data_buffer, count);
-            fflush(SCI3);
+            write(SCI0, data_buffer, count);
+            fflush(SCI0);
         }
         _time_delay (200);
 	}
