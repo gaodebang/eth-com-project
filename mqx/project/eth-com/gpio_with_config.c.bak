@@ -1,6 +1,6 @@
 #include "gpio_with_config.h"
 
-#include "init_tasks.h"
+#include "gpio_with_config.h"
 
 extern void __boot(void);
 
@@ -132,7 +132,7 @@ void gpio_server_task(uint_32 initial_data)
                     Btn_Rst_Value = LWGPIO_VALUE_LOW;
                     lwgpio_set_value(&Led, LWGPIO_VALUE_LOW);
                     /*
-                    reset flash 
+                    reset flash
                     */
                 }
             }

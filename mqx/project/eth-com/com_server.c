@@ -20,6 +20,7 @@ void com_server_task_tcp_server(uint_32 initial_data)
                 if (count0 == RTCS_ERROR)
                 {
                     error = RTCS_geterror(initial_data);
+                    error = error;
                     shutdown(initial_data, FLAG_CLOSE_TX);
                     Tcp_Server_Sock[i] = 0;
                     if(Socket_Num--);
@@ -46,6 +47,7 @@ void com_server_task_tcp_client(uint_32 initial_data)
                 if (count0 == RTCS_ERROR)
                 {
                     error = RTCS_geterror(Tcp_Client_Sock[i]);
+                    error = error;
                     shutdown(Tcp_Client_Sock[i], FLAG_CLOSE_TX);
                     Tcp_Client_Sock[i] = 0;
                     Tcp_Connect_Mark[i] = 0;
@@ -74,6 +76,7 @@ void com_server_task_udp_connect(uint_32 initial_data)
                 if (count0 == RTCS_ERROR)
                 {
                     error = RTCS_geterror(Udp_Connect_Sock[i]);
+                    error = error;
                     shutdown(Udp_Connect_Sock[i], FLAG_CLOSE_TX);
                     Udp_Connect_Sock[i] = 0;
                 }

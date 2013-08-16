@@ -9,8 +9,6 @@
 #include "gpio_with_config.h"
 #include "shell_at.h"
 
-uint_8 Sys_Mode;
-
 static void get_mac_address(_enet_address intent, _enet_address source)
 {
     uint_8 i;
@@ -25,8 +23,7 @@ static void init_rtcs(void)
     uint_32 error;
     IPCFG_IP_ADDRESS_DATA ip_data;
     _enet_address address;
-    
-    Init_Default_Parameter();
+
     error = RTCS_create();
     if (error != RTCS_OK)
     {
@@ -218,57 +215,63 @@ void init_tasks_task(uint_32 initial_data)
     _task_id task_id;
     uint_8 enet_mode;
     
+    
     Gpio_Init();
-    Inside_Flash_File = fopen("flashx:bank0", NULL);
-    SCI0 = fopen("ittya:", (char const *)IO_SERIAL_NON_BLOCKING);
+
     task_id = _task_create(0, GPIO_SERVER_TASK, 0);
     if (task_id == MQX_NULL_TASK_ID)
     {
         _task_block();
     }
-
-    if(Sys_Mode == 0)
-    {
-       task_id = _task_create(0, SHELL_SERVER_TASK, 0);
-        if (task_id == MQX_NULL_TASK_ID)
+    if(Rst_Cmd_Set == 1)
+    {    
+        SCI0 = fopen("ittya:", (char const *)IO_SERIAL_NON_BLOCKING);
+        Inside_Flash_Init();
+        Init_Default_Parameter();
+        
+        if(Sys_Mode == 0)
         {
-            _task_block();
-        }        
-    }
-    else
-    {
-        init_rtcs();
-        enet_mode = Enet_Device.G_Enet_Mode;
-        if (enet_mode == 0)
-        {
-            task_id = _task_create(0, COM_SERVER_TASK_TCP_SERVER, 0);
+           task_id = _task_create(0, SHELL_SERVER_TASK, 0);
             if (task_id == MQX_NULL_TASK_ID)
             {
                 _task_block();
-            }
-            tcp_server_start();
-        }
-        else if (enet_mode == 1)
-        {
-            task_id = _task_create(0, COM_SERVER_TASK_TCP_CLIENT, 0);
-            if (task_id == MQX_NULL_TASK_ID)
-            {
-                _task_block();
-            }
-            tcp_client_start();
-        }
-        else if (enet_mode == 2)
-        {
-            task_id = _task_create(0, COM_SERVER_TASK_UDP_CONNECT, 0);
-            if (task_id == MQX_NULL_TASK_ID)
-            {
-                _task_block();
-            }
-            udp_connect_start();
+            }        
         }
         else
         {
-        }   
+            init_rtcs();
+            enet_mode = Enet_Device.G_Enet_Mode;
+            if (enet_mode == 0)
+            {
+                task_id = _task_create(0, COM_SERVER_TASK_TCP_SERVER, 0);
+                if (task_id == MQX_NULL_TASK_ID)
+                {
+                    _task_block();
+                }
+                tcp_server_start();
+            }
+            else if (enet_mode == 1)
+            {
+                task_id = _task_create(0, COM_SERVER_TASK_TCP_CLIENT, 0);
+                if (task_id == MQX_NULL_TASK_ID)
+                {
+                    _task_block();
+                }
+                tcp_client_start();
+            }
+            else if (enet_mode == 2)
+            {
+                task_id = _task_create(0, COM_SERVER_TASK_UDP_CONNECT, 0);
+                if (task_id == MQX_NULL_TASK_ID)
+                {
+                    _task_block();
+                }
+                udp_connect_start();
+            }
+            else
+            {
+            }   
+        }
     }
     _task_block();
 }
