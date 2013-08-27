@@ -3740,10 +3740,16 @@
   <group>
     <name>Source</name>
     <file>
+      <name>$PROJ_DIR$\..\..\broad_cast.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\..\com_server.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\config_parameter.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\flash.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\gpio_with_config.c</name>
@@ -3756,6 +3762,9 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\shell_at.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\tcp_cfg.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\tcp_client.c</name>

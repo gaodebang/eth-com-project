@@ -2,6 +2,7 @@
 
 #include "flash.h"
 #include "config_parameter.h"
+#include "tcp_cfg.h"
 #include "tcp_server.h"
 #include "com_server.h"
 #include "tcp_client.h"
@@ -36,11 +37,98 @@ static void init_rtcs(void)
     {
         _task_block();
     }
-    error = ipcfg_bind_staticip (BSP_DEFAULT_ENET_DEVICE, &ip_data);
-    //error = ipcfg_bind_dhcp_wait(BSP_DEFAULT_ENET_DEVICE, TRUE, &ip_data);--*/
+    if(Ip_Get_Mode==1)
+    {
+    	error = ipcfg_bind_staticip (BSP_DEFAULT_ENET_DEVICE, &ip_data);
+	}
+    else
+    {
+    	error = ipcfg_bind_dhcp_wait(BSP_DEFAULT_ENET_DEVICE, TRUE, &ip_data);
+    }
+    if (error == RTCS_OK) 
+    {
+        ipcfg_get_ip(BSP_DEFAULT_ENET_DEVICE, &ip_data);
+    }
+    else
+    {
+    	_task_block();
+   	}
+}
+
+void tcp_cfg_start(uint_32 initial_data)
+{
+    uint_32 listensock, error, sock, option;
+    uint_8 max_socket_num;
+    sockaddr addr;
+    _task_id task_id;
+    listensock = socket(PF_INET, SOCK_STREAM, 0);
+    if(listensock == RTCS_SOCKET_ERROR)
+    {
+        _task_block();
+    }   
+     
+    option = 0x1000;
+    error = setsockopt(listensock, SOL_TCP, OPT_TBSIZE, &option, sizeof(uint_32));
     if (error != RTCS_OK) 
     {
         _task_block();
+    }
+    error = setsockopt(listensock, SOL_TCP, OPT_RBSIZE, &option, sizeof(uint_32));
+    if (error != RTCS_OK) 
+    {
+        _task_block();
+    }
+
+    option = FALSE;
+    error = setsockopt(listensock, SOL_TCP, OPT_SEND_NOWAIT, &option, sizeof(uint_32));
+    if (error != RTCS_OK) 
+    {
+        _task_block();
+    }
+
+    option = TRUE;
+    error = setsockopt(listensock, SOL_TCP, OPT_RECEIVE_NOWAIT, &option, sizeof(uint_32));
+    if (error != RTCS_OK) 
+    {
+        _task_block();
+    }
+
+    addr = Enet_Device.G_Addr_TCP_SERVER;
+    addr.sin_port = Cfg_Port;
+    error = bind(listensock, &addr, sizeof(sockaddr));
+    if (error != RTCS_OK) 
+    {
+        _task_block();
+    }
+    error = listen(listensock, 0);
+    if(error != RTCS_OK)
+    {
+        _task_block();
+    }
+    max_socket_num = 1;
+    while(1)
+    {
+        /* Wait for a connection */
+        sock= accept(listensock, NULL, NULL);
+        if(Cfg_Socket_Num<max_socket_num)
+        {
+        	if (sock != RTCS_SOCKET_ERROR)
+        	{
+        		task_id = _task_create(0, TCP_CFG_TASK, sock);
+        	    if (task_id != MQX_NULL_TASK_ID)
+        	    {
+        	        Cfg_Socket_Num++;
+        	    }
+            }
+            else
+            {
+           	    _task_block();
+            }
+        }
+        else
+        {
+        	shutdown(sock, FLAG_CLOSE_TX);
+        }
     }
 }
 
@@ -52,6 +140,18 @@ static void tcp_server_start(void)
     _task_id task_id;
     listensock = socket(PF_INET, SOCK_STREAM, 0);
     if(listensock == RTCS_SOCKET_ERROR)
+    {
+        _task_block();
+    }
+       
+    option = 0x1000;
+    error = setsockopt(listensock, SOL_TCP, OPT_TBSIZE, &option, sizeof(uint_32));
+    if (error != RTCS_OK) 
+    {
+        _task_block();
+    }
+    error = setsockopt(listensock, SOL_TCP, OPT_RBSIZE, &option, sizeof(uint_32));
+    if (error != RTCS_OK) 
     {
         _task_block();
     }
@@ -127,6 +227,18 @@ static void tcp_client_start(void)
                 {
                     _task_block();
                 }
+                    
+			    option = 0x1000;
+			    error = setsockopt(listensock, SOL_TCP, OPT_TBSIZE, &option, sizeof(uint_32));
+			    if (error != RTCS_OK) 
+			    {
+			        _task_block();
+			    }
+			    error = setsockopt(listensock, SOL_TCP, OPT_RBSIZE, &option, sizeof(uint_32));
+			    if (error != RTCS_OK) 
+			    {
+			        _task_block();
+			    }
                 
                 option = FALSE;
                 error = setsockopt(listensock, SOL_TCP, OPT_SEND_NOWAIT, &option, sizeof(uint_32));
@@ -197,10 +309,10 @@ static void udp_connect_start(void)
     error = bind(listensock, &addr, sizeof(sockaddr));
     if(error == RTCS_OK)
     {
-        for (i=0; i<max_socket_num; i++)
-        {
-        	task_id = _task_create(0, UDP_CONNECT_TASK0+i, listensock);
-        	if (task_id != MQX_NULL_TASK_ID)
+    	task_id = _task_create(0, UDP_CONNECT_TASK0, listensock);
+    	if (task_id != MQX_NULL_TASK_ID)
+    	{        
+    		for (i=0; i<max_socket_num; i++)
         	{
         		Udp_Connect_Sock[i] = listensock;
         	}
@@ -209,12 +321,49 @@ static void udp_connect_start(void)
     _task_block();
 }
 
+static void broad_cast_start(void)
+{
+    uint_32 listensock, error, option;
+    sockaddr addr;
+    _task_id task_id;
+    
+    listensock =  socket(PF_INET, SOCK_DGRAM, 0);
+    if(listensock == RTCS_SOCKET_ERROR)
+    {
+        _task_block();
+    }
+    
+    option = FALSE;
+    error = setsockopt(listensock, SOL_UDP, OPT_SEND_NOWAIT, &option, sizeof(uint_32));
+    if (error != RTCS_OK) 
+    {
+        _task_block();
+    }
+
+    option = TRUE;
+    error = setsockopt(listensock, SOL_UDP, OPT_RECEIVE_NOWAIT, &option, sizeof(uint_32));
+    if (error != RTCS_OK) 
+    {
+        _task_block();
+    }
+
+    addr = Enet_Device.G_Addr_UDP_LOCAL;
+    addr.sin_port = Broad_Cast_Port;
+    error = bind(listensock, &addr, sizeof(sockaddr));
+    if(error == RTCS_OK)
+    {
+    	task_id = _task_create(0, BROAD_CAST_TASK, listensock);
+		if (task_id == MQX_NULL_TASK_ID)
+        {
+            _task_block();
+        } 
+    }
+}
 
 void init_tasks_task(uint_32 initial_data)
 {
     _task_id task_id;
     uint_8 enet_mode;
-    
     
     Gpio_Init();
 
@@ -231,7 +380,7 @@ void init_tasks_task(uint_32 initial_data)
         
         if(Sys_Mode == 0)
         {
-           task_id = _task_create(0, SHELL_SERVER_TASK, 0);
+            task_id = _task_create(0, SHELL_SERVER_TASK, 0);
             if (task_id == MQX_NULL_TASK_ID)
             {
                 _task_block();
@@ -240,6 +389,13 @@ void init_tasks_task(uint_32 initial_data)
         else
         {
             init_rtcs();
+            broad_cast_start();
+            task_id = _task_create(0, TCP_CFG_START, 0);
+            if (task_id == MQX_NULL_TASK_ID)
+            {
+                _task_block();
+            }
+            
             enet_mode = Enet_Device.G_Enet_Mode;
             if (enet_mode == 0)
             {
@@ -270,7 +426,7 @@ void init_tasks_task(uint_32 initial_data)
             }
             else
             {
-            }   
+            }
         }
     }
     _task_block();

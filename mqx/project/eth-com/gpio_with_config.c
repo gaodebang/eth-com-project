@@ -131,9 +131,7 @@ void gpio_server_task(uint_32 initial_data)
                     time_add_rst = 0;
                     Btn_Rst_Value = LWGPIO_VALUE_LOW;
                     lwgpio_set_value(&Led, LWGPIO_VALUE_LOW);
-                    /*
-                    reset flash
-                    */
+                    Reset_Parameter_Data();
                 }
             }
             else if((Btn_Rst_Value == LWGPIO_VALUE_LOW)&&(btn_rst_value_temp == LWGPIO_VALUE_LOW))

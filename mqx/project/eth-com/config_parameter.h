@@ -4,6 +4,7 @@ typedef struct enet_parameter
 {
     _enet_address G_Mac_Address;
     IPCFG_IP_ADDRESS_DATA G_Ip_Data;
+    _ip_address Dns_Ip_Data;
     uint_8 G_Enet_Mode;
     sockaddr G_Addr_TCP_SERVER;
     sockaddr G_Addr_TCP_CLIENT[4];
@@ -12,11 +13,29 @@ typedef struct enet_parameter
     uint_8 MAX_SOCKET_NUM;
 }ENET_PARAMETER;
 
+typedef struct sci_parameter
+{
+    uint_32 Baud;
+    uint_8 Data_Bits;
+    uint_8 Stop_Bits;
+    uint_8 Parity;
+}SCI_PARAMETER;
+
+
+
+extern SCI_PARAMETER Sci0_Parameter;
+
 extern ENET_PARAMETER Enet_Device;
 
 extern MQX_FILE_PTR SCI0;
 
 extern uint_8 Sys_Mode;
-
+extern uint_8 Ip_Get_Mode;
+extern uint_32 Web_Port;
+extern uint_32 Cmd_Port;
+extern uint_32 Cfg_Port;
+extern uint_32 Broad_Cast_Port;
+extern uint_8 Global_Password[16];
+extern uint_8 Global_Name[16];
 extern void Init_Default_Parameter(void);
 extern void Reset_Parameter_Data(void);

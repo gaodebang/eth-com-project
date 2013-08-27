@@ -24,4 +24,7 @@
 
 #define SHELL_SERVER_TASK               19
 
-#define COM_BUFFER_PUSH                 20
+#define TCP_CFG_TASK	                20
+#define COM_SERVER_TASK_TCP_CFG	        21
+#define TCP_CFG_START	        		22
+#define BROAD_CAST_TASK		        	23

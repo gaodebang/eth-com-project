@@ -27,7 +27,7 @@ void com_server_task_tcp_server(uint_32 initial_data)
                 }
             }
         }
-        _time_delay (200);
+        _time_delay (50);
     }
 }
 
@@ -54,7 +54,7 @@ void com_server_task_tcp_client(uint_32 initial_data)
                 }
             }
         }
-        _time_delay (200);
+        _time_delay (50);
     }
 }
 
@@ -62,8 +62,8 @@ void com_server_task_udp_connect(uint_32 initial_data)
 {
     char data_buffer[4096]; 
     uint_8 i;
-    uint_32 count, count0, error;
-    sockaddr         addr;
+    uint_32 count;
+    static sockaddr         addr;
 	while(TRUE)
     {
         count = fread(data_buffer, 1, 4096, SCI0);
@@ -72,16 +72,9 @@ void com_server_task_udp_connect(uint_32 initial_data)
             if (Udp_Connect_Sock[i] != 0)
             {
                 addr = Enet_Device.G_Addr_UDP_REMOTE[i];              
-                count0 = sendto(Udp_Connect_Sock[i], data_buffer, count, 0, &addr, sizeof(sockaddr));
-                if (count0 == RTCS_ERROR)
-                {
-                    error = RTCS_geterror(Udp_Connect_Sock[i]);
-                    error = error;
-                    shutdown(Udp_Connect_Sock[i], FLAG_CLOSE_TX);
-                    Udp_Connect_Sock[i] = 0;
-                }
+                sendto(Udp_Connect_Sock[i], data_buffer, count, 0, &addr, sizeof(sockaddr));
             }
         }
-        _time_delay (200);
+        _time_delay (50);
     }
 }

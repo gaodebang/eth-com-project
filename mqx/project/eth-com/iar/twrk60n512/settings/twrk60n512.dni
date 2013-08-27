@@ -9,7 +9,7 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=979161245
+Checksum=-1732130507
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -118,21 +118,23 @@ LogFile=_ ""
 [Disassemble mode]
 mode=0
 [Breakpoints]
-Bp0=_ "STD_CODE" "{F:\eth-com\mqx\project\eth-com\init_tasks.c}.267.1" 0 0 0 0 "" 0 "" 0
+Bp0=_ "STD_CODE" "{F:\eth-com\mqx\project\eth-com\init_tasks.c}.271.1" 0 0 0 0 "" 0 "" 0
 Bp1=_ "STD_CODE" "{F:\eth-com\mqx\project\eth-com\tcp_server.c}.37.9" 0 0 0 0 "" 0 "" 0
 Bp2=_ "STD_CODE" "{F:\eth-com\mqx\project\eth-com\com_server.c}.83.1" 0 0 0 0 "" 0 "" 0
 Bp3=_ "STD_CODE" "{F:\eth-com\mqx\project\eth-com\com_server.c}.83.1" 0 0 0 0 "" 0 "" 0
-Bp4=_ "STD_CODE" "{F:\eth-com\mqx\project\eth-com\init_tasks.c}.267.1" 0 0 0 0 "" 0 "" 0
-Bp5=_ "STD_CODE" "{F:\eth-com\mqx\project\eth-com\init_tasks.c}.267.1" 0 0 0 0 "" 0 "" 0
+Bp4=_ "STD_CODE" "{F:\eth-com\mqx\project\eth-com\init_tasks.c}.271.1" 0 0 0 0 "" 0 "" 0
+Bp5=_ "STD_CODE" "{F:\eth-com\mqx\project\eth-com\init_tasks.c}.271.1" 0 0 0 0 "" 0 "" 0
 Bp6=_ "STD_CODE" "{F:\eth-com\mqx\project\eth-com\tcp_client.c}.48.3" 0 0 0 0 "" 0 "" 0
-Bp7=_ "STD_CODE" "{F:\eth-com\mqx\project\eth-com\init_tasks.c}.267.1" 0 0 0 0 "" 0 "" 0
-Bp8=_ "STD_CODE" "{F:\eth-com\mqx\project\eth-com\init_tasks.c}.267.2" 0 0 0 0 "" 0 "" 0
+Bp7=_ "STD_CODE" "{F:\eth-com\mqx\project\eth-com\init_tasks.c}.271.1" 0 0 0 0 "" 0 "" 0
+Bp8=_ "STD_CODE" "{F:\eth-com\mqx\project\eth-com\init_tasks.c}.271.11" 0 0 0 0 "" 0 "" 0
 Bp9=_ "STD_CODE" "{F:\eth-com\mqx\project\eth-com\com_server.c}.83.1" 0 0 0 0 "" 0 "" 0
 Bp10=_ "STD_CODE" "{F:\eth-com\mqx\project\eth-com\com_server.c}.83.2" 0 0 0 0 "" 0 "" 0
 Bp11=_ "STD_CODE" "{F:\eth-com\mqx\project\eth-com\gpio.c}.45.1" 0 0 0 0 "" 0 "" 0
 Bp12=_ "STD_CODE" "{F:\eth-com\mqx\project\eth-com\gpio_with_config.c}.46.1" 0 0 0 0 "" 0 "" 0
 Bp13=_ "STD_CODE" "{F:\eth-com\mqx\project\eth-com\gpio_with_config.c}.46.9" 0 0 0 0 "" 0 "" 0
-Count=14
+Bp14=_ "STD_CODE" "{F:\eth-com\mqx\project\eth-com\init_tasks.c}.46.6" 1 0 0 0 "" 0 "" 0
+Bp15=_ "STD_CODE" "{D:\Freescale\Freescale_MQX_4_0\rtcs\source\if\ipcfg.c}.1441.5" 1 0 0 0 "" 0 "" 0
+Count=16
 [Aliases]
 Count=0
 SuppressDialog=0

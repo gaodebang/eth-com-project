@@ -9,7 +9,7 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=1134533016
+Checksum=-270529835
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -140,7 +140,8 @@ Bp4=_ "STD_CODE" "{D:\Freescale\Freescale_MQX_4_0\mqx\examples\hello\hello.c}.26
 Bp5=_ "STD_CODE" "{D:\Freescale\Freescale_MQX_4_0\mqx\examples\hello\hello.c}.264.1" 0 0 0 0 "" 0 "" 0
 Bp6=_ "STD_CODE" "{D:\Freescale\Freescale_MQX_4_0\mqx\examples\hello\hello.c}.264.1" 0 0 0 0 "" 0 "" 0
 Bp7=_ "STD_CODE" "{D:\Freescale\Freescale_MQX_4_0\mqx\examples\hello\hello.c}.264.1" 0 0 0 0 "" 0 "" 0
-Count=8
+Bp8=_ "STD_CODE" "{F:\eth-com\mqx\project\tcp-server\tcp-server.c}.66.4" 1 0 0 0 "" 0 "" 0
+Count=9
 [Aliases]
 Count=0
 SuppressDialog=0

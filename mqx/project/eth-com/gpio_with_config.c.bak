@@ -1,6 +1,6 @@
 #include "gpio_with_config.h"
 
-#include "gpio_with_config.h"
+#include "config_parameter.h"
 
 extern void __boot(void);
 

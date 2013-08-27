@@ -8,9 +8,6 @@
 #error This application requires BSPCFG_ENABLE_IO_SUBSYSTEM defined non-zero in user_config.h. Please recompile BSP with this option.
 #endif
 
-#ifndef BSP_DEFAULT_IO_CHANNEL_DEFINED
-#error This application requires BSP_DEFAULT_IO_CHANNEL to be not NULL. Please set corresponding BSPCFG_ENABLE_TTYx to non-zero in user_config.h and recompile BSP with this option.
-#endif
 
 /* Task IDs */
 #define TASKINIT_TASK 		5
@@ -44,7 +41,7 @@ void taskinit_task (uint_32 initial_data)
 		_task_id 				 task_id;
 		
     _enet_address                       address;
-    IPCFG_IP_ADDRESS_DATA								ip_data;
+    static IPCFG_IP_ADDRESS_DATA								ip_data;
     
 		error = RTCS_create();
 		if (error != RTCS_OK) 
@@ -65,15 +62,15 @@ void taskinit_task (uint_32 initial_data)
         _task_set_error(MQX_OK);
     }
 
-    error = ipcfg_bind_staticip (0, &ip_data);
-    //error = ipcfg_bind_dhcp_wait(0, TRUE, &ip_data);
+     //error = ipcfg_bind_staticip (0, &ip_data);
+   error = ipcfg_bind_dhcp_wait(0, TRUE, &ip_data);
 
     if (error != RTCS_OK) 
     {
         printf("\nIPCFG: Failed to bind IP address. Error = 0x%X", error);
         _task_block();
     }
-
+ipcfg_get_ip(BSP_DEFAULT_ENET_DEVICE, &ip_data);
 		listensock =  socket(PF_INET, SOCK_STREAM, 0);
 		if(listensock == RTCS_SOCKET_ERROR)
 		{

@@ -18,14 +18,14 @@ void tcp_server_task(uint_32 initial_data)
 		    if(error == RTCS_OK)
 		    {
 		  	    shutdown(initial_data, FLAG_CLOSE_TX);
-		  	    _task_destroy(MQX_NULL_TASK_ID);
 		  	    if(Socket_Num--);
+		  	    _task_destroy(MQX_NULL_TASK_ID);
 		    }
 		    else
 		    {
 		  	    shutdown(initial_data, FLAG_CLOSE_TX);
-		  	    _task_destroy(MQX_NULL_TASK_ID);
 		  	    if(Socket_Num--);
+		  	    _task_destroy(MQX_NULL_TASK_ID);
 		    }
 		}
 		else
@@ -33,6 +33,6 @@ void tcp_server_task(uint_32 initial_data)
             write(SCI0, data_buffer, count);
             fflush(SCI0);
         }
-        _time_delay (200);
+        _time_delay (50);
 	}
 }
